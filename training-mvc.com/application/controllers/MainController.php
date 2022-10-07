@@ -7,6 +7,10 @@ use application\core\Controller;
 class MainController extends Controller
 {
     public function indexAction() {
-        echo 'Главная страница';
+        $vars = [
+            'name' => 'Vasya',
+            'age' => 88,
+        ];
+        $this->view->render('Главная страница', $vars);
     }
 }
