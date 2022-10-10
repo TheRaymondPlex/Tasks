@@ -48,7 +48,5 @@
 
     </form>
     <br>
-    <a href="/">
-        <button type="button" class="btn btn-secondary" name="viewAll">View All</button>
-    </a>
+    <a href="/" class="btn btn-secondary">View All</a>
 </div>

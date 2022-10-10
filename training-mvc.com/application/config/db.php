@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'host' => 'localhost',
-    'name' => 'task3base',
-    'user' => 'root',
-    'password' => '1111'
+    'host' => getenv('DB_HOST'),
+    'name' => getenv('DB_NAME'),
+    'user' => getenv('DB_NAME'),
+    'password' => getenv('DB_PASSWORD')
 ];

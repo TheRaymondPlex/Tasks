@@ -42,7 +42,7 @@
             </select>
         </div>
 
-        <input type="text" name="emailOld" value="<?=$usr['email']?>">
+        <input type="text" name="emailOld" value="<?=$usr['email']?>" hidden>
 
         <div class="buttonsMain">
             <button type="submit" class="btn btn-secondary" name="cancel">Cancel</button>
