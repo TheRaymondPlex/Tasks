@@ -65,7 +65,6 @@
         ?>
     </div>
 </div>
-
 <!--debug-->
 <?php //foreach ($users as $user): ?>
 <!--    <h3>--><?php //echo $user['email']; ?><!--</h3>-->

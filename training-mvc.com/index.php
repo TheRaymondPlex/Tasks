@@ -1,6 +1,7 @@
 <?php
 
 use application\core\Router;
+use application\lib\DotEnv;
 
 spl_autoload_register(function($class) {
     $path = str_replace('\\', '/', $class.'.php');
@@ -12,5 +13,9 @@ spl_autoload_register(function($class) {
 
 session_start();
 
+(new DotEnv(__DIR__ . '/.env'))->load();
+
 $router = new Router;
 $router->run();
+
+

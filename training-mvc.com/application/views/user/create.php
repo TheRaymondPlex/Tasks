@@ -3,6 +3,12 @@
     <form action="/user/create" method="post">
         <h1 class="display-6 text-center">Create new profile</h1>
         <hr>
+        <?php if (isset($_SESSION['error'])) {?>
+            <div class="alert alert-danger" role="alert">
+                <?=$_SESSION['error']?>
+            </div>
+        <?php unset($_SESSION["error"]);
+        } ?>
         <br>
         <div class="mb-3">
             <label for="InputName" class="form-label">Name</label>
