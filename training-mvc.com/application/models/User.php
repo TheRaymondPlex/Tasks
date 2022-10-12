@@ -8,8 +8,8 @@ class User extends Model
 {
     public function createNewUser($email, $name, $gender, $status) {
         $result = $this->db->query("
-            INSERT INTO users(email, name, gender, status)
-            VALUES ('$email', '$name', '$gender', '$status')
+            INSERT INTO users(email, name, gender, status, addDate)
+            VALUES ('$email', '$name', '$gender', '$status', NOW())
         ");
         return $result;
     }
