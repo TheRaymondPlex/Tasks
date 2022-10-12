@@ -1,4 +1,3 @@
-<h1 style="text-align: center">Creating profile page</h1>
 <div class="container">
     <form action="/user/create" method="post">
         <h1 class="display-6 text-center">Create new profile</h1>

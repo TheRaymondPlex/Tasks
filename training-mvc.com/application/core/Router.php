@@ -37,9 +37,29 @@ class Router
         return false;
     }
 
+    public function matchWithGET()
+    {
+        $urlPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $url = trim($urlPath, '/');
+        $urlArray = explode('/', $url);
+        $origUrl = $urlArray[0].'/'.$urlArray[1];
+
+        foreach ($this->routes as $route => $params) {
+            if (preg_match($route, $origUrl, $matches)) {
+                $this->params = $params;
+                if (array_key_exists(2, $urlArray)) {
+                    $getParam = $urlArray[2];
+                    $_SESSION['email'] = $getParam;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public function run()
     {
-        if ($this->match()) {
+        if ($this->match() || $this->matchWithGET()) {
             $path = 'application\controllers\\' . ucfirst($this->params['controller']) . 'Controller';
 
             if (class_exists($path)) {

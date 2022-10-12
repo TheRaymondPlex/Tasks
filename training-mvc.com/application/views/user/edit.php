@@ -1,4 +1,3 @@
-<h1 style="text-align: center">Editing profile page</h1>
 <?php foreach ($user as $usr) { ?>
 <div class="container">
     <form action="/user/edit" method="post">

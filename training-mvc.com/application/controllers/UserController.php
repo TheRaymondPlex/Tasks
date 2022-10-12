@@ -79,8 +79,8 @@ class UserController extends Controller
 
     public function editAction()
     {
-        if (!empty($_GET)) {
-            $result = $this->model->getUserByEmail($_GET['email']);
+        if (!empty($_SESSION['email'])) {
+            $result = $this->model->getUserByEmail($_SESSION['email']);
             $vars = [
                 'user' => $result
             ];
@@ -89,9 +89,10 @@ class UserController extends Controller
         if (!empty($_POST)) {
             if ($this->nameEmailValidation() && $this->selectFieldsValidation()) {
                 $this->model->updateUserByEmail($_POST['email'], $_POST['name'], $_POST['selectGender'], $_POST['selectStatus'], $_POST['emailOld']);
+                unset($_SESSION['email']);
                 $this->view->redirect('/');
             } else {
-                $this->view->redirect('?email='.$_POST['emailOld']);
+                $this->view->redirect('edit/'.$_POST['emailOld']);
             }
         }
     }
