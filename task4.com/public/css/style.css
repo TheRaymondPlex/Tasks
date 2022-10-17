@@ -1,0 +1,40 @@
+.container {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container form {
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.buttonsMain {
+    display: flex;
+    justify-content: space-around;
+}
+
+.pagesMain {
+    display: flex;
+    justify-content: space-between;
+    width: 500px
+}
+
+.buttonRight {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.box {
+    width: 1000px;
+}
+
+.container table {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
