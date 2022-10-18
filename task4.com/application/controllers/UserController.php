@@ -13,83 +13,106 @@ class UserController extends Controller
         return $data;
     }
 
-    public function nameEmailValidation(): bool
+    private function errorsCheck()
     {
+        $result = [];
+
         $email = $this->dataModify($_POST['email']);
         $name = $this->dataModify($_POST['name']);
+        $gender = $this->dataModify($_POST['gender']);
+        $status = $this->dataModify($_POST['status']);
         $email_len = strlen($email);
         $name_len = strlen($name);
 
-        if (empty($email) && empty($name)) {
-            $_SESSION['error'] = 'Name and Email fields are empty!';
-            return false;
+
+        if (empty($name)) {
+            $result[] = 'Name field is empty!';
+        } elseif (!preg_match("#^[a-zA-Z-' ]*$#",$name)) {
+            $result[] = 'Only letters and white space can be in Name field!';
+        } elseif ($name_len < 3) {
+            $result[] = 'Name is too short! At least 3 characters needed.';
         }
 
         if (empty($email)) {
-            $_SESSION['error'] = 'Email field is empty!';
-            return false;
+            $result[] = 'Email field is empty!';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $result[] = "This Email is not allowed!";
         }
 
-        if (empty($name)) {
-            $_SESSION['error'] = 'Name field is empty!';
-            return false;
+        if ($email_len > 50) {
+            $result[] = 'Email is too long! Max 50 characters allowed.';
         }
 
-        if (!preg_match("#^[a-zA-Z-' ]*$#",$name)) {
-            $_SESSION['error'] = "Only letters and white space can be in Name field!";
-            return false;
+        if ($name_len > 40) {
+            $result[] = 'Name is too long! Max 40 characters allowed.';
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['error'] = "This email is not allowed!";
-            return false;
+        if (empty($gender)) {
+            $result[] = 'Gender is empty!';
         }
 
-        if ($email_len > 50 || $name_len < 3 || $name_len > 40) {
-            $_SESSION['error'] = 'Incorrect data entered!';
-            return false;
-        }
-
-        return true;
-    }
-
-    public function selectFieldsValidation(): bool
-    {
-        $gender = $this->dataModify($_POST['gender']);
-        $status = $this->dataModify($_POST['status']);
-
-        if (empty($gender) && empty($status)) {
-            $_SESSION['error'] = 'Incorrect data!';
-            return false;
+        if (empty($status)) {
+            $result[] = 'Status is empty!';
         }
 
         if ($gender != 'male' && $gender != 'female') {
-            $_SESSION['error'] = 'Incorrect gender!';
-            return false;
+            $result[] = 'Incorrect data in gender selector!';
         }
 
         if ($status != 'active' && $status != 'inactive') {
-            $_SESSION['error'] = 'Incorrect status!';
-            return false;
+            $result[] = 'Incorrect data in status selector!';
         }
 
-        return true;
+        return $result;
     }
 
     public function createAction()
     {
         if (!empty($_POST)) {
-            if ($this->nameEmailValidation() && $this->selectFieldsValidation()) {
-//                $this->model->createNewUser($_POST['email'], $_POST['name'], $_POST['selectGender'], $_POST['selectStatus']);
+            $errors = $this->errorsCheck();
+
+            if (empty($errors)) {
                 $this->model->createNewUser();
                 $this->view->redirect('/');
+            } else {
+                $errorsList = '';
+                foreach ($errors as $key => $error) {
+                    $errorsList.= $key+1 . ') ' . $error . '<br>';
+                }
+
+                $data = [
+                  'errors' => $errorsList
+                ];
+
+                $this->view->render('Создать пользователя', $data);
             }
-        }
-        $this->view->render('Создать пользователя');
+
+        } else $this->view->render('Создать пользователя');
     }
 
-    public function editAction(int $param): void {
+    public function updateAction(): void
+    {
+        if (!empty($_POST)) {
+            $errors = $this->errorsCheck();
+
+            if (empty($errors)) {
+                $this->model->updateUserById($_POST['id']);
+                $this->view->redirect('/');
+            } else {
+                $errorsList = '';
+                foreach ($errors as $key => $error) {
+                    $errorsList.= $key+1 . ') ' . $error . '<br>';
+                }
+                $_SESSION['error'] = $errorsList;
+                $this->view->redirect('edit/' . $_POST['id']);
+            }
+        }
+    }
+
+    public function editAction(int $param): void
+    {
         if (!empty($param)) {
+
             $result = $this->model->getUserById($param);
             $decoded = json_decode($result, true);
 
@@ -97,18 +120,6 @@ class UserController extends Controller
                 'user' => $decoded
             ];
             $this->view->render('Редактировать', $data);
-        }
-    }
-
-    public function updateAction(): void
-    {
-        if (!empty($_POST)) {
-            if ($this->nameEmailValidation() && $this->selectFieldsValidation()) {
-                $this->model->updateUserById($_POST['id']);
-                $this->view->redirect('/');
-            } else {
-                $this->view->redirect('edit/'.$_POST['id']);
-            }
         }
     }
 
