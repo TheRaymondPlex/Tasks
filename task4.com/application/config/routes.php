@@ -14,8 +14,8 @@ return [
     ],
 
     'user/create' => [
-      'controller' => 'user',
-      'action' => 'create',
+        'controller' => 'user',
+        'action' => 'create',
     ],
 
     'user/edit/([0-9]+)' => [

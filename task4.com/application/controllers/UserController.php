@@ -3,107 +3,132 @@
 namespace application\controllers;
 
 use application\core\Controller;
+use application\core\View;
 
 class UserController extends Controller
 {
-    public function dataModify($data): string
+
+    private function modifyFormData(string $data): string
     {
         $data = trim($data);
         $data = htmlspecialchars($data);
+
         return $data;
     }
 
-    private function errorsCheck()
+    private function validateUserData(): array
     {
-        $result = [];
+        $errors = [];
 
-        $email = $this->dataModify($_POST['email']);
-        $name = $this->dataModify($_POST['name']);
-        $gender = $this->dataModify($_POST['gender']);
-        $status = $this->dataModify($_POST['status']);
-        $email_len = strlen($email);
-        $name_len = strlen($name);
+        $email = $this->modifyFormData($_POST['email']);
+        $name = $this->modifyFormData($_POST['name']);
+        $gender = $this->modifyFormData($_POST['gender']);
+        $status = $this->modifyFormData($_POST['status']);
 
 
         if (empty($name)) {
-            $result[] = 'Name field is empty!';
-        } elseif (!preg_match("#^[a-zA-Z-' ]*$#",$name)) {
-            $result[] = 'Only letters and white space can be in Name field!';
-        } elseif ($name_len < 3) {
-            $result[] = 'Name is too short! At least 3 characters needed.';
+            $errors[] = 'Name field is empty!';
+        } elseif (!preg_match("#^[a-zA-Z-' ]*$#", $name)) {
+            $errors[] = 'Only letters and white space can be in Name field!';
+        } elseif (strlen($name) < 3) {
+            $errors[] = 'Name is too short! At least 3 characters needed.';
         }
 
         if (empty($email)) {
-            $result[] = 'Email field is empty!';
+            $errors[] = 'Email field is empty!';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $result[] = "This Email is not allowed!";
+            $errors[] = "This Email is not allowed!";
         }
 
-        if ($email_len > 50) {
-            $result[] = 'Email is too long! Max 50 characters allowed.';
+        if (strlen($email) > 50) {
+            $errors[] = 'Email is too long! Max 50 characters allowed.';
         }
 
-        if ($name_len > 40) {
-            $result[] = 'Name is too long! Max 40 characters allowed.';
+        if (strlen($name) > 40) {
+            $errors[] = 'Name is too long! Max 40 characters allowed.';
         }
 
         if (empty($gender)) {
-            $result[] = 'Gender is empty!';
+            $errors[] = 'Gender is empty!';
         }
 
         if (empty($status)) {
-            $result[] = 'Status is empty!';
+            $errors[] = 'Status is empty!';
         }
 
-        if ($gender != 'male' && $gender != 'female') {
-            $result[] = 'Incorrect data in gender selector!';
+        if (!in_array($gender, self::GENDERS)) {
+            $errors[] = 'Incorrect data in gender selector!';
         }
 
-        if ($status != 'active' && $status != 'inactive') {
-            $result[] = 'Incorrect data in status selector!';
+        if (!in_array($status, self::STATUSES)) {
+            $errors[] = 'Incorrect data in status selector!';
         }
 
-        return $result;
+        return $errors;
     }
 
-    public function createAction()
+    private function convertErrorsToList(array $errors): string
     {
-        if (!empty($_POST)) {
-            $errors = $this->errorsCheck();
+        $errorsList = '';
+        foreach ($errors as $key => $error) {
+            $errorsList .= $key + 1 . ') ' . $error . '<br>';
+        }
 
-            if (empty($errors)) {
-                $this->model->createNewUser();
-                $this->view->redirect('/');
-            } else {
-                $errorsList = '';
-                foreach ($errors as $key => $error) {
-                    $errorsList.= $key+1 . ') ' . $error . '<br>';
-                }
+        return $errorsList;
+    }
 
-                $data = [
-                  'errors' => $errorsList
-                ];
+    private function checkResponseStatus(int $code): bool
+    {
+        if ($code == 422) { // Статус 422 приходит от API, когда ему отправлены недействительные данные
+            return false;
+        }
+        return true;
+    }
 
-                $this->view->render('Создать пользователя', $data);
-            }
+    private function redirectToPages(int $response): void
+    {
+        if (!$this->checkResponseStatus($response)) {
+            View::showErrorPage($response);
+        } else {
+            $this->view->redirect('/');
+        }
+    }
 
-        } else $this->view->render('Создать пользователя');
+    public function createAction(): void
+    {
+        if (empty($_POST)) {
+            $data = [
+                'genders' => self::GENDERS,
+                'statuses' => self::STATUSES
+            ];
+            $this->view->render('Создать пользователя', $data);
+            return;
+        }
+
+        $errors = $this->validateUserData();
+        if (empty($errors)) {
+            $response = $this->model->createNewUser();
+            $this->redirectToPages($response);
+        } else {
+            $data = [
+                'genders' => self::GENDERS,
+                'statuses' => self::STATUSES,
+                'errors' => $this->convertErrorsToList($errors)
+            ];
+            $this->view->render('Создать пользователя', $data);
+        }
     }
 
     public function updateAction(): void
     {
         if (!empty($_POST)) {
-            $errors = $this->errorsCheck();
+            $errors = $this->validateUserData();
 
             if (empty($errors)) {
-                $this->model->updateUserById($_POST['id']);
-                $this->view->redirect('/');
+                $response = $this->model->updateUserById($_POST['id']);
+                $this->redirectToPages($response);
             } else {
-                $errorsList = '';
-                foreach ($errors as $key => $error) {
-                    $errorsList.= $key+1 . ') ' . $error . '<br>';
-                }
-                $_SESSION['error'] = $errorsList;
+                $_SESSION['error'] = $this->convertErrorsToList($errors);
                 $this->view->redirect('edit/' . $_POST['id']);
             }
         }
@@ -114,10 +139,11 @@ class UserController extends Controller
         if (!empty($param)) {
 
             $result = $this->model->getUserById($param);
-            $decoded = json_decode($result, true);
 
             $data = [
-                'user' => $decoded
+                'user' => json_decode($result, true),
+                'genders' => self::GENDERS,
+                'statuses' => self::STATUSES
             ];
             $this->view->render('Редактировать', $data);
         }
@@ -129,6 +155,5 @@ class UserController extends Controller
             $this->model->deleteUserById($param);
             $this->view->redirect('/');
         }
-        $this->view->render('Удаление');
     }
 }

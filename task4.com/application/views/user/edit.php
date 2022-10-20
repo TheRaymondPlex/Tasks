@@ -2,9 +2,9 @@
     <form action="/user/update" method="post">
         <h1 class="display-6 text-center">Editing user</h1>
         <hr>
-        <?php if (isset($_SESSION['error'])) {?>
+        <?php if (isset($_SESSION['error'])) { ?>
             <div class="alert alert-danger" role="alert">
-                <?=$_SESSION['error']?>
+                <?= $_SESSION['error'] ?>
             </div>
             <?php unset($_SESSION["error"]);
         } ?>
@@ -15,7 +15,7 @@
                    class="form-control"
                    id="name"
                    name="name"
-                   value="<?=$user['name']?>"
+                   value="<?= $data['user']['name'] ?>"
             >
         </div>
 
@@ -25,7 +25,7 @@
                    class="form-control"
                    id="email"
                    name="email"
-                   value="<?=$user['email']?>"
+                   value="<?= $data['user']['email'] ?>"
             >
         </div>
 
@@ -33,20 +33,38 @@
         <div class="mb-3">
             <label for="Select" class="form-label">Gender</label>
             <select id="selectGender" class="form-select" name="gender">
-                <option value="male" <?php if ($user['gender'] == 'male') { echo ' selected="selected"'; }?>>Male</option>
-                <option value="female" <?php if ($user['gender'] == 'female') { echo ' selected="selected"'; }?>>Female</option>
+                <?php
+                foreach ($data['genders'] as $gender) {
+                    echo "<option value=\"$gender\"";
+                    if ($data['user']['gender'] === $gender) {
+                        echo 'selected ="selected">';
+                    } else {
+                        echo '>';
+                    }
+                    echo ucfirst($gender) . '</option>';
+                }
+                ?>
             </select>
         </div>
 
         <div class="mb-3">
             <label for="Select" class="form-label">Status</label>
             <select id="selectStatus" class="form-select" name="status">
-                <option value="active" <?php if ($user['status'] == 'active') { echo ' selected="selected"'; }?>>Active</option>
-                <option value="inactive" <?php if ($user['status'] == 'inactive') { echo ' selected="selected"'; }?>>Inactive</option>
+                <?php
+                foreach ($data['statuses'] as $status) {
+                    echo "<option value=\"$status\"";
+                    if ($data['user']['status'] === $status) {
+                        echo 'selected ="selected">';
+                    } else {
+                        echo '>';
+                    }
+                    echo ucfirst($status) . '</option>';
+                }
+                ?>
             </select>
         </div>
 
-        <input type="text" name="id" value="<?=$user['id']?>" hidden>
+        <input type="text" name="id" value="<?= $data['user']['id'] ?>" hidden>
 
         <div class="buttonsMain">
             <a href="/" class="btn btn-secondary">Cancel</a>

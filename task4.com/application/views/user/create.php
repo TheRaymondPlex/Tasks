@@ -2,14 +2,14 @@
     <form action="/user/create" method="post">
         <h1 class="display-6 text-center">Create new profile</h1>
         <hr>
-        <?php if (isset($errors)) {?>
+        <?php if (isset($data['errors'])) { ?>
             <div class="alert alert-danger" role="alert">
-                <?=$errors?>
+                <?= $data['errors'] ?>
             </div>
         <?php } ?>
         <br>
         <div class="mb-3">
-            <label for="InputName" class="form-label">Name</label>
+            <label for="name" class="form-label">Name</label>
             <input type="name"
                    class="form-control"
                    id="name"
@@ -19,7 +19,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="InputName" class="form-label">Email</label>
+            <label for="email" class="form-label">Email</label>
             <input type="email"
                    class="form-control"
                    id="email"
@@ -31,18 +31,20 @@
 
 
         <div class="mb-3">
-            <label for="Select" class="form-label">Gender</label>
+            <label for="selectGender" class="form-label">Gender</label>
             <select id="selectGender" class="form-select" name="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <?php foreach ($data['genders'] as $gender) { ?>
+                    <option value="<?= $gender ?>"><?php echo ucfirst($gender) ?></option>
+                <?php } ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="Select" class="form-label">Status</label>
+            <label for="selectStatus" class="form-label">Status</label>
             <select id="selectStatus" class="form-select" name="status">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <?php foreach ($data['statuses'] as $status) { ?>
+                    <option value="<?= $status ?>"><?php echo ucfirst($status) ?></option>
+                <?php } ?>
             </select>
         </div>
 

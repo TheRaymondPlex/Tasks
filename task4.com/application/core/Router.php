@@ -17,27 +17,30 @@ class Router
         }
     }
 
-    private function add($route, $params)
+    private function add(string $route, array $params): void
     {
         $route = '#^' . $route . '$#';
         $this->routes[$route] = $params;
     }
 
-    private function getUrl() {
+    private function getUrl(): string
+    {
         $urlPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         if (!empty($urlPath)) {
             return trim($urlPath, '/');
         }
     }
 
-    private function isUrlValid()
+    private function isUrlValid(): bool
     {
         $url = $this->getUrl();
 
         foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)) {
                 $this->params = $params;
-                if (empty($url)) return true;
+                if (empty($url)) {
+                    return true;
+                }
                 $this->moveParams();
                 return true;
 
@@ -46,20 +49,22 @@ class Router
         return false;
     }
 
-    private function moveParams() {
+    private function moveParams(): void
+    {
         if (array_key_exists('param', $this->params)) {
             $this->params['param'] = $this->getParams();
         }
     }
 
-    private function getParams()
+    private function getParams(): string
     {
         $url = $this->getUrl();
         $segments = explode('/', $url);
         return end($segments);
     }
 
-    public function run(): void {
+    public function run(): void
+    {
         if (!$this->isUrlValid()) {
             View::showErrorPage(404);
         }

@@ -11,14 +11,16 @@ class View
     public function __construct($route)
     {
         $this->route = $route;
-        $this->path = $route['controller'].'/'.$route['action'];
+        $this->path = $route['controller'] . '/' . $route['action'];
     }
 
-    public function render($title, $vars = []) {
-        $path = 'application/views/'.$this->path.'.php';
-        $layout_path = 'application/views/layouts/'.$this->layout.'.php';
+    public function render(string $title, $data = []): void
+    {
+        $path = 'application/views/' . $this->path . '.php';
+        $layout_path = 'application/views/layouts/' . $this->layout . '.php';
 
-        extract($vars);
+//        extract($data);
+
         if (file_exists($path)) {
             ob_start();
             require $path;
@@ -27,18 +29,25 @@ class View
         }
     }
 
-    public function redirect($url) {
+    public function redirect(string $url): void
+    {
         header('Location: ' . $url);
         exit;
     }
 
-    public static function showErrorPage($code) {
+    public static function showErrorPage(int $code): void
+    {
         http_response_code($code);
 
-        $path_error = 'application/views/errors/'.$code.'.php';
+        $path = 'application/views/errors/errorPage.php';
+        $layout_path = 'application/views/layouts/default.php';
+        $title = 'Ошибка ' . $code;
 
-        if (file_exists($path_error)) {
-            require $path_error;
+        if (file_exists($path)) {
+            ob_start();
+            require $path;
+            $content = ob_get_clean();
+            require $layout_path;
         }
         exit;
     }
