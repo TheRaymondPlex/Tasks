@@ -11,12 +11,12 @@ abstract class Controller
     protected $model;
 
     protected const GENDERS = [
-        'male',
-        'female'
+        'male' => 'Мужчина',
+        'female' => 'Женщина'
     ];
     protected const STATUSES = [
-        'active',
-        'inactive'
+        'active' => 'Активный',
+        'inactive' => 'Неактивный'
     ];
 
 
@@ -33,5 +33,7 @@ abstract class Controller
         if (class_exists($path)) {
             return new $path;
         }
+
+        return null;
     }
 }

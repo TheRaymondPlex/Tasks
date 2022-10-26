@@ -24,7 +24,7 @@
     width: 500px
 }
 
-.ButtonRight {
+.buttonRight {
     display: flex;
     justify-content: flex-end;
 }

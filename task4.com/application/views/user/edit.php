@@ -10,17 +10,18 @@
         } ?>
         <br>
         <div class="mb-3">
-            <label for="InputName" class="form-label">Name</label>
-            <input type="name"
-                   class="form-control"
-                   id="name"
-                   name="name"
-                   value="<?= $data['user']['name'] ?>"
-            >
+            <label for="name" class="form-label">Name
+                <input type="text"
+                       class="form-control"
+                       id="name"
+                       name="name"
+                       value="<?= $data['user']['name'] ?>"
+                >
+            </label>
         </div>
 
         <div class="mb-3">
-            <label for="InputName" class="form-label">Email</label>
+            <label for="email" class="form-label">Email</label>
             <input type="email"
                    class="form-control"
                    id="email"
@@ -29,36 +30,25 @@
             >
         </div>
 
-
         <div class="mb-3">
-            <label for="Select" class="form-label">Gender</label>
+            <label for="selectGender" class="form-label">Gender</label>
             <select id="selectGender" class="form-select" name="gender">
                 <?php
-                foreach ($data['genders'] as $gender) {
-                    echo "<option value=\"$gender\"";
-                    if ($data['user']['gender'] === $gender) {
-                        echo 'selected ="selected">';
-                    } else {
-                        echo '>';
-                    }
-                    echo ucfirst($gender) . '</option>';
+                foreach ($data['genders'] as $key => $val) {
+                    $selected = ($key == $data['user']['gender']) ? 'selected="selected"' : '';
+                    echo '<option value="' . $key . '" ' . $selected . ' >' . $val . '</option>';
                 }
                 ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="Select" class="form-label">Status</label>
+            <label for="selectStatus" class="form-label">Status</label>
             <select id="selectStatus" class="form-select" name="status">
                 <?php
-                foreach ($data['statuses'] as $status) {
-                    echo "<option value=\"$status\"";
-                    if ($data['user']['status'] === $status) {
-                        echo 'selected ="selected">';
-                    } else {
-                        echo '>';
-                    }
-                    echo ucfirst($status) . '</option>';
+                foreach ($data['statuses'] as $key => $val) {
+                    $selected = ($key == $data['user']['status']) ? 'selected="selected"' : '';
+                    echo '<option value="' . $key . '" ' . $selected . ' >' . $val . '</option>';
                 }
                 ?>
             </select>

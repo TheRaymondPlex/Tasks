@@ -2,7 +2,7 @@
     <div class="box">
         <h1 class="display-6 text-center">All profiles</h1>
         <br>
-        <div class="ButtonRight">
+        <div class="buttonRight">
             <a href="/user/create">
                 <button type="button" class="btn btn-primary" name="createNew">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -36,12 +36,8 @@
                         <th scope="row"><?= $key + 1 ?></th>
                         <td><?= $user['name'] ?></td>
                         <td><?= $user['email'] ?></td>
-                        <td><?php if (in_array($user['gender'], $data['genders'])) {
-                                echo ucfirst($user['gender']);
-                            } ?></td>
-                        <td><?php if (in_array($user['status'], $data['statuses'])) {
-                                echo ucfirst($user['status']);
-                            } ?></td>
+                        <td><?php echo $data['genders'][$user['gender']]; ?></td>
+                        <td><?php echo $data['statuses'][$user['status']]; ?></td>
                         <td><a href="/user/edit/<?= $user['id'] ?>" class="btn btn-outline-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                      class="bi bi-pencil-square" viewBox="0 0 16 16">
