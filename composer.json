@@ -1,6 +1,8 @@
 {
     "require": {
         "twig/twig": "^3.0",
-      "ext-curl": "*"
+      "ext-curl": "*",
+      "ext-exif": "*",
+      "ext-fileinfo": "*"
     }
 }

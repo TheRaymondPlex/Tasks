@@ -2,7 +2,7 @@
 
 return [
     '' => [
-        'controller' => 'main',
+        'controller' => 'files',
         'action' => 'index'
     ],
 
@@ -14,5 +14,15 @@ return [
     'file/delete' => [
         'controller' => 'files',
         'action' => 'delete'
+    ],
+
+    'file/delete/all' => [
+        'controller' => 'files',
+        'action' => 'deleteAll'
+    ],
+
+    'file/download' => [
+        'controller' => 'files',
+        'action' => 'download'
     ]
 ];

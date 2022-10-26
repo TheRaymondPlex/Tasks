@@ -2,43 +2,60 @@
 
 namespace application\models;
 
-use application\core\Model;
+use application\lib\FileChecker;
 
-class Files extends Model
+class Files extends Main
 {
-    public function uploadFile(): void
+    public function getUploads(): array
     {
-        $name = $_FILES['filename']['name'];
-        echo $name;
+        $uploadedFiles = [];
+        $uploadsFolderPath = FileChecker::UPLOADS_FOLDER_PATH;
+
+        $filesInFolder = array_diff(scandir($uploadsFolderPath), array('..', '.')); // Избавляемся от точек в массиве с файлами
+        $filesInFolder = array_values($filesInFolder); // реиндексация массива после удаления точек
+
+        foreach ($filesInFolder as $file) {
+            $uploadedFiles[] = $uploadsFolderPath . $file;
+        }
+
+        return $uploadedFiles;
     }
 
-    public function updateUserById($id)
+    public function uploadFile(string $dirPath): void
     {
-        $curl = curl_init(getenv('API') . '/' . $id . '?access-token=' . getenv('ACCESS_TOKEN'));
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $_POST);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-
-        curl_exec($curl);
-        curl_close($curl);
+        $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
+        $newFileName = date('d.m.Y - H:i:s') . '.' . $ext;
+        FileChecker::createLog('upload', "File " . $_FILES['filename']['name'] . ' was renamed to ' . $newFileName);
+        FileChecker::createLog('upload', "File size - " . $_FILES['filename']['size'] . ' bytes');
+        move_uploaded_file($_FILES["filename"]["tmp_name"], $dirPath . $newFileName);
+        FileChecker::createLog('upload', "File " . $newFileName . " successfully uploaded!");
     }
 
-    public function getUserById($id)
+    public function downloadFileByName($name): void
     {
-        $curl = curl_init(getenv('API') . '/' . $id . '?access-token=' . getenv('ACCESS_TOKEN'));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
+        $this->setHeaders($name);
+        flush();
+        readfile(FileChecker::UPLOADS_FOLDER_PATH . $name);
+        FileChecker::createLog('action', "File \"" . $name . "\" was downloaded");
     }
 
-    public function deleteUserById($id): void
+    public function deleteFileByName($name): void
     {
-        $curl = curl_init(getenv('API').'/'.$id.'?access-token='.getenv('ACCESS_TOKEN'));
+        unlink(FileChecker::UPLOADS_FOLDER_PATH . $name);
+        FileChecker::createLog('action', "File \"" . $name . "\" was deleted");
+    }
 
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+    public function deleteAllFiles(): void
+    {
+        FileChecker::createLog('action', "Deleting all files...");
+        $uploadsFolderPath = FileChecker::UPLOADS_FOLDER_PATH;
+        $filesInFolder = array_diff(scandir($uploadsFolderPath), array('..', '.')); // Избавляемся от точек в массиве с файлами
+        $filesInFolder = array_values($filesInFolder); // реиндексация массива после удаления точек
 
-        curl_exec($curl);
-        curl_close($curl);
+        foreach ($filesInFolder as $file) {
+            unlink($uploadsFolderPath . $file);
+            FileChecker::createLog('action', "Deleting \"" . $file . "\"");
+        }
+        FileChecker::createLog('action', "DELETED!");
     }
 }

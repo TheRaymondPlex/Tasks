@@ -3,19 +3,76 @@
 namespace application\controllers;
 
 use application\core\Controller;
+use application\lib\FileChecker;
 
 class FilesController extends Controller
 {
-    public function uploadAction()
+    public function indexAction(): void
     {
-        if (!empty($_FILES)) {
-            $this->model->uploadFile();
+        $uploadsDirPath = FileChecker::UPLOADS_FOLDER_PATH;
+        if (!file_exists($uploadsDirPath)) {
+            $this->view->render();
+        } else {
+            $uploads = $this->model->getUploads();
+            $filesData = FileChecker::getMetaData($uploads);
+
+            $data = [
+                'uploads' => $filesData
+            ];
+            $this->view->render($data);
         }
-        $this->view->render();
     }
 
-    public function deleteAction(int $param): void
+    public function uploadAction(): bool
     {
+        if (!empty($_FILES)) {
+            FileChecker::createLog('upload', "New upload attempt!");
+            $errors = FileChecker::validatingFilesOnUpload();
+            $data = [
+                'errors' => $errors
+            ];
+            if (!empty($errors)) {
+                $this->view->render($data);
+                FileChecker::createLog('upload', "Upload attempt failed: $errors");
+                return false;
+            }
+
+            $uploadsDirPath = FileChecker::UPLOADS_FOLDER_PATH;
+            if (!file_exists($uploadsDirPath)) {
+                // Используем @, чтобы отключить отображение любых ошибок для конкретной строки кода.
+                @mkdir($uploadsDirPath, 0777, true);
+            }
+
+            $this->model->uploadFile($uploadsDirPath);
+            $this->view->redirect('/');
+            return true;
+        }
         $this->view->render();
+
+        return true;
+    }
+
+    public function downloadAction(): void
+    {
+        if (isset($_GET['file']) && file_exists(FileChecker::UPLOADS_FOLDER_PATH . $_GET['file'])) {
+            $this->model->downloadFileByName($_GET['file']);
+        }
+        $this->view->redirect('/');
+    }
+
+    public function deleteAction(): void
+    {
+        if (isset($_GET['file']) && file_exists(FileChecker::UPLOADS_FOLDER_PATH . $_GET['file'])) {
+            $this->model->deleteFileByName($_GET['file']);
+        }
+        $this->view->redirect('/');
+    }
+
+    public function deleteAllAction(): void
+    {
+        if (file_exists(FileChecker::UPLOADS_FOLDER_PATH)) {
+            $this->model->deleteAllFiles();
+        }
+        $this->view->redirect('/');
     }
 }
