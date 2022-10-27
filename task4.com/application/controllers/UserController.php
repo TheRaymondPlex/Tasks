@@ -56,11 +56,11 @@ class UserController extends Controller
             $errors[] = 'Status is empty!';
         }
 
-        if (!in_array($gender, self::GENDERS)) {
+        if (!isset(self::GENDERS[$gender])) {
             $errors[] = 'Incorrect data in gender selector!';
         }
 
-        if (!in_array($status, self::STATUSES)) {
+        if (!isset(self::STATUSES[$status])) {
             $errors[] = 'Incorrect data in status selector!';
         }
 
