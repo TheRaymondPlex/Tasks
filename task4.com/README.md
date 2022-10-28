@@ -1,4 +1,4 @@
-![Innowise Group Logo](/home/user/Загрузки/inno-logo.png)
+![Innowise Group Logo](public/inno-logo.png)
 # Task 4 solution
 
 # Run the application
