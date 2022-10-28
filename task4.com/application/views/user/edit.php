@@ -10,14 +10,13 @@
         } ?>
         <br>
         <div class="mb-3">
-            <label for="name" class="form-label">Name
-                <input type="text"
-                       class="form-control"
-                       id="name"
-                       name="name"
-                       value="<?= $data['user']['name'] ?>"
-                >
-            </label>
+            <label for="name" class="form-label">Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   value="<?= $data['user']['name'] ?>"
+            >
         </div>
 
         <div class="mb-3">

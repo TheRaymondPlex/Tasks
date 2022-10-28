@@ -31,7 +31,7 @@ class User extends Model
         return $respCode;
     }
 
-    public function getUserById(int $id)
+    public function getUserById(int $id): string
     {
         $curl = curl_init(getenv('API') . '/' . $id . '?access-token=' . getenv('ACCESS_TOKEN'));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
