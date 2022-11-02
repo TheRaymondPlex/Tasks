@@ -119,17 +119,17 @@ class UserController extends Controller
         }
     }
 
-    public function updateAction(): void
+    public function updateAction(int $param): void
     {
-        if (!empty($_POST)) {
+        if (!empty($param)) {
             $errors = $this->validateUserData();
 
             if (empty($errors)) {
-                $response = $this->model->updateUserById($_POST['id']);
+                $response = $this->model->updateUserById($param);
                 $this->redirectToPages($response);
             } else {
                 $_SESSION['error'] = $this->convertErrorsToList($errors);
-                $this->view->redirect('edit/' . $_POST['id']);
+                $this->view->redirect('edit/' . $param);
             }
         }
     }

@@ -24,9 +24,10 @@ return [
         'param' => ''
     ],
 
-    'user/update' => [
+    'user/update/([0-9]+)' => [
         'controller' => 'user',
-        'action' => 'update'
+        'action' => 'update',
+        'param' => ''
     ],
 
     'user/delete/([0-9]+)' => [

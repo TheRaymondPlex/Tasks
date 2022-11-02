@@ -10,7 +10,9 @@
         <br>
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
+            <span id="name-error"></span>
             <input type="text"
+                   onkeyup="validateName();unlockSubmit()"
                    class="form-control"
                    id="name"
                    name="name"
@@ -20,7 +22,9 @@
 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
+            <span id="email-error"></span>
             <input type="email"
+                   onkeyup="validateEmail();unlockSubmit()"
                    class="form-control"
                    id="email"
                    name="email"
@@ -52,10 +56,11 @@
         </div>
 
         <div class="buttonsMain">
-            <button type="submit" class="btn btn-primary" name="create">Create</button>
+            <button disabled type="submit" class="btn btn-primary" name="create" id="create">Create</button>
         </div>
 
     </form>
     <br>
     <a href="/" class="btn btn-secondary">View All</a>
 </div>
+<script src="/public/js/FormValidation.js"></script>
