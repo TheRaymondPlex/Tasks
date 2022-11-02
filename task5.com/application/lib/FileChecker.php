@@ -8,12 +8,12 @@ class FileChecker
     public const UPLOADS_FOLDER_PATH = 'uploads/'; // Default folder for uploads
     private const LOGS_FOLDER_PATH = 'application/logs/'; //Default folder for logs
 
-    private static $allowedImageTypes = [ // Allowed image types that can be uploaded
+    private static array $allowedImageTypes = [ // Allowed image types that can be uploaded
         'jpg' => 'image/jpeg',
         'png' => 'image/png',
         'gif' => 'image/gif'
     ];
-    private static $allowedTextTypes = [ // Allowed text types that can be uploaded
+    private static array $allowedTextTypes = [ // Allowed text types that can be uploaded
         'txt' => 'text/plain',
         'doc' => 'application/msword',
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -37,22 +37,35 @@ class FileChecker
         return false;
     }
 
-    private static function composingImageMetaData(string $upload): string
-    {
-        $metas = exif_read_data($upload);
-        $metaAsString = '';
-
-        foreach ($metas as $upKey => $meta) {
-            if (!is_array($meta)) {
-                $metaAsString .= "<b>" . $upKey . "</b>: " . $meta . "\n";
+    private static function composingMetaArray($arr) {
+        if (!is_array($arr)) {
+            return false;
+        }
+        $newArr = array();
+        foreach ($arr as $key => $item) {
+            if (is_array($item)) {
+                $newArr = array_merge($arr, self::composingMetaArray($item));
+                unset($newArr[$key]);
             } else {
-                foreach ($meta as $downKey => $value) {
-                    $metaAsString .= "<b>" . $downKey . "</b>: " . $value . "\n";
-                }
+                $newArr[$key] = $item;
             }
         }
 
-        return $metaAsString;
+        return $newArr;
+    }
+
+    private static function getImageMetaDataInArray(string $upload): array
+    {
+        $metas = exif_read_data($upload);
+
+        return self::composingMetaArray($metas);
+    }
+
+    public static function deleteDots(string $folderPath): array
+    {
+        $filesWithoutDots = array_diff(scandir($folderPath), array('..', '.')); // Избавляемся от точек в массиве с файлами
+
+        return array_values($filesWithoutDots);
     }
 
     public static function createLog($logType, $log)
@@ -67,7 +80,7 @@ class FileChecker
         }
 
         if (!file_exists(self::LOGS_FOLDER_PATH)) {
-            @mkdir(self::LOGS_FOLDER_PATH, 0777, true);
+            mkdir(self::LOGS_FOLDER_PATH, 0777, true);
         }
         if (!file_exists($pathToLogFile)) {
             file_put_contents($pathToLogFile, '');
@@ -118,7 +131,7 @@ class FileChecker
             if (self::isImageType(mime_content_type($upload))) {
                 $singleFileData['name'] = $fileName;
                 $singleFileData['size'] = $fileSize;
-                $singleFileData['meta'] = self::composingImageMetaData($upload);
+                $singleFileData['meta'] = self::getImageMetaDataInArray($upload);
 
                 $filesData[] = $singleFileData;
             }

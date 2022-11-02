@@ -27,6 +27,14 @@ class FilesController extends Controller
     {
         if (!empty($_FILES)) {
             FileChecker::createLog('upload', "New upload attempt!");
+
+            $uploadsDirPath = FileChecker::UPLOADS_FOLDER_PATH;
+            if (!file_exists($uploadsDirPath)) {
+                FileChecker::createLog('upload', $uploadsDirPath . " folder does not exist. Creating...");
+                mkdir($uploadsDirPath, 0777, true);
+                FileChecker::createLog('upload', $uploadsDirPath . " created.");
+            }
+
             $errors = FileChecker::validatingFilesOnUpload();
             $data = [
                 'errors' => $errors
@@ -35,12 +43,6 @@ class FilesController extends Controller
                 $this->view->render($data);
                 FileChecker::createLog('upload', "Upload attempt failed: $errors");
                 return false;
-            }
-
-            $uploadsDirPath = FileChecker::UPLOADS_FOLDER_PATH;
-            if (!file_exists($uploadsDirPath)) {
-                // Используем @, чтобы отключить отображение любых ошибок для конкретной строки кода.
-                @mkdir($uploadsDirPath, 0777, true);
             }
 
             $this->model->uploadFile($uploadsDirPath);

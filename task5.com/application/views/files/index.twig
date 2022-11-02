@@ -30,7 +30,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Size</th>
                     <th scope="col">Meta</th>
-                    <th scope="col">Action</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,14 @@
                         <th scope="row">{{ key + 1 }}</th>
                         <td>{{ value['name'] }}</td>
                         <td>{{ value['size'] }} Kb</td>
-                        <td>{{ value['meta']|raw|nl2br }}</td>
+{#                        <td>{{ value['meta']|raw|nl2br }}</td>#}
+                        <td>{% if value['meta'] is iterable %}
+                                {% for key, val in value['meta'] %}
+                                <b>{{ key }}</b>: {{ val }}<br>
+                                {% endfor %}
+                            {% else %}
+                                {{ value['meta'] }}
+                            {% endif %}</td>
                         <td><div class="buttonsMain">
                                 <a href="/file/download?file={{ value['name'] }}" class="btn btn-outline-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -59,9 +66,7 @@
                 </tbody>
             </table>
         {% else %}
-            <hr>
-            <h1 style="text-align: center">No files!</h1>
-            <hr>
+            <div id="no-files">No files!</div>
         {% endif %}
     </div>
 </div>

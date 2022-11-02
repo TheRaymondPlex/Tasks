@@ -8,11 +8,10 @@ class Files extends Main
 {
     public function getUploads(): array
     {
-        $uploadedFiles = [];
+        $uploadedFiles = array();
         $uploadsFolderPath = FileChecker::UPLOADS_FOLDER_PATH;
 
-        $filesInFolder = array_diff(scandir($uploadsFolderPath), array('..', '.')); // Избавляемся от точек в массиве с файлами
-        $filesInFolder = array_values($filesInFolder); // реиндексация массива после удаления точек
+        $filesInFolder = FileChecker::deleteDots($uploadsFolderPath);
 
         foreach ($filesInFolder as $file) {
             $uploadedFiles[] = $uploadsFolderPath . $file;
@@ -23,12 +22,10 @@ class Files extends Main
 
     public function uploadFile(string $dirPath): void
     {
-        $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
-        $newFileName = date('d.m.Y - H:i:s') . '.' . $ext;
-        FileChecker::createLog('upload', "File " . $_FILES['filename']['name'] . ' was renamed to ' . $newFileName);
+        FileChecker::createLog('upload', "File " . $_FILES['filename']['name'] . ' will be renamed to ' . date('dmY-His-') . $_FILES['filename']['name']);
         FileChecker::createLog('upload', "File size - " . $_FILES['filename']['size'] . ' bytes');
-        move_uploaded_file($_FILES["filename"]["tmp_name"], $dirPath . $newFileName);
-        FileChecker::createLog('upload', "File " . $newFileName . " successfully uploaded!");
+        move_uploaded_file($_FILES["filename"]["tmp_name"], $dirPath . date('dmY-His-') . $_FILES['filename']['name']);
+        FileChecker::createLog('upload', "New file successfully uploaded!");
     }
 
     public function downloadFileByName($name): void
@@ -49,8 +46,7 @@ class Files extends Main
     {
         FileChecker::createLog('action', "Deleting all files...");
         $uploadsFolderPath = FileChecker::UPLOADS_FOLDER_PATH;
-        $filesInFolder = array_diff(scandir($uploadsFolderPath), array('..', '.')); // Избавляемся от точек в массиве с файлами
-        $filesInFolder = array_values($filesInFolder); // реиндексация массива после удаления точек
+        $filesInFolder = FileChecker::deleteDots($uploadsFolderPath);
 
         foreach ($filesInFolder as $file) {
             unlink($uploadsFolderPath . $file);

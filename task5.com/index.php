@@ -11,8 +11,7 @@ spl_autoload_register(function ($class) {
     }
 });
 
-(new DotEnv(__DIR__ . '/.env'))->load();
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 session_start();
 

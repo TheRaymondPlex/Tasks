@@ -1,24 +1,26 @@
+const MAX_SIZE = 1000000; // max size in bytes (1000000 bytes = 1MB)
+
 function FileValidation() {
-    let fi = document.getElementById('formFile');
-    let filePath = fi.value;
-    const allowedImages = /(\.jpg|\.png|\.gif)$/i;
-    const allowedTexts = /(\.txt|\.doc|\.docx)$/i;
+    let formFile = document.getElementById('formFile');
+    let filePath = formFile.value;
+    const allowedImageTypes = /(\.jpg|\.png|\.gif)$/i;
+    const allowedTextTypes = /(\.txt|\.doc|\.docx)$/i;
     // Check if any file is selected.
-    if (fi.files.length > 0) {
-        for (let i = 0; i <= fi.files.length - 1; i++) {
-            const fsize = fi.files.item(i).size;
+    if (formFile.files.length > 0) {
+        for (let i = 0; i <= formFile.files.length - 1; i++) {
+            const fsize = formFile.files.item(i).size;
             // The size of the file.
-            if (fsize >= 1000000) {
-                alert('File size is too big! In must me less than 1 MB');
-                fi.value = '';
+            if (fsize >= MAX_SIZE) {
+                alert('File size is too big! In must me less than ' + Math.round(MAX_SIZE/1024/1024) + ' MB');
+                formFile.value = ''; // removing file from form
             } else {
-                if (allowedImages.exec(filePath)) {
+                if (allowedImageTypes.exec(filePath)) {
                     showPreview(event);
                     document.getElementById('size').innerHTML = '<b>File size: ' + fsize + '</b> bytes';
                     return;
-                } else if (!allowedTexts.exec(filePath) && !allowedImages.exec(filePath)) {
+                } else if (!allowedTextTypes.exec(filePath) && !allowedImageTypes.exec(filePath)) {
                     alert('Invalid file type!');
-                    fi.value = '';
+                    formFile.value = '';
                     return;
                 } else {
                     document.getElementById('size').innerHTML = '<b>File size: ' + fsize + '</b> bytes';
