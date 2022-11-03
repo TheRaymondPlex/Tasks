@@ -1,0 +1,107 @@
+{% extends 'layouts/default.twig' %}
+{% block title %}
+    Sign In
+{% endblock %}
+{% block style %}
+    <style>
+        body {
+            background-color: rgb(35, 37, 50);
+        }
+    </style>
+{% endblock %}
+{% block script %}<script src="/public/js/FormValidation.js"></script>{% endblock %}
+{% block content %}
+    <div class="container">
+        <form action="/user/register" method="post" id="login-form">
+            <h1 class="display-5 text-center">SIGN IN</h1>
+            <hr>
+            {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ errors|nl2br }}
+                </div>
+            {% endif %}
+            <br>
+            <div class="mb-3">
+                <label for="first-name" class="form-label">First Name</label>
+                <span id="first-name-error"></span>
+                <input type="text"
+                       class="form-control"
+                       id="first-name"
+                       name="first-name"
+                       value=""
+                       placeholder="Enter your first name"
+                       onkeyup="unlockSubmit()">
+            </div>
+
+            <div class="mb-3">
+                <label for="second-name" class="form-label">Second Name</label>
+                <span id="second-name-error"></span>
+                <input type="text"
+                       class="form-control"
+                       id="second-name"
+                       name="second-name"
+                       value=""
+                       placeholder="Enter your second name"
+                       onkeyup = "unlockSubmit()">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <span id="email-error"></span>
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       name="email"
+                       value=""
+                       placeholder="Enter your Email"
+                       onkeyup = "unlockSubmit()">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email-confirm" class="form-label">Email Confirmation</label>
+                <span id="email-confirm-error"></span>
+                <input type="email"
+                       class="form-control"
+                       id="email-confirm"
+                       name="email-confirm"
+                       value=""
+                       placeholder="Enter Email again"
+                       onkeyup = "unlockSubmit()">
+            </div>
+
+            <div class="mb-3">
+                <label for="pass" class="form-label">Password</label>
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
+                <span id="pass-error"></span>
+                <input type="password"
+                       class="form-control"
+                       id="pass"
+                       name="pass"
+                       value=""
+                       placeholder="Enter your password"
+                       onkeyup = "unlockSubmit()">
+                <div id="passHelp" class="form-text">Your password will be hashed. We'll never know it.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="pass-confirm" class="form-label">Password Confirmation</label>
+                <span id="pass-confirm-error"></span>
+                <input type="password"
+                       class="form-control"
+                       id="pass-confirm"
+                       name="pass-confirm"
+                       value=""
+                       placeholder="Enter password again"
+                       onkeyup = "unlockSubmit()">
+            </div>
+
+            <div class="buttonsMain">
+                <a href="/" class="btn btn-secondary">Cancel</a>
+                <button type="reset" onclick="clearAllFormInputs()" class="btn btn-dark">Clear</button>
+                <button id="register" type="submit" class="btn btn-success" disabled>Register</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
