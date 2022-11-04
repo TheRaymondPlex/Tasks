@@ -11,8 +11,8 @@ return [
     ],
 
     'user/logout' => [
-    'controller' => 'user',
-    'action' => 'logout'
+        'controller' => 'user',
+        'action' => 'logout'
     ],
 
     'user/register' => [

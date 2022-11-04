@@ -3,52 +3,71 @@
 namespace application\controllers;
 
 use application\core\Controller;
+use application\lib\FormChecker;
 
 class UserController extends Controller
 {
-    private function checkUserData(): bool {
-        $users = require_once 'application/config/accounts.php';
-
-        if (isset($users[$_POST['email']])) {
-            if (password_verify($_POST['pass'], $users[$_POST['email']]['password'])) {
-                return true;
-            } else {
-                $_SESSION['error'] .= "Incorrect password!\n";
-                return false;
-            }
+    private function checkUserData(): string
+    {
+        $id = $this->model->getUserIdByEmail($_POST['email']);
+        if (empty($id)) {
+            return 'There is no such user!';
         }
+        if (password_verify($_POST['pass'], $this->model->getUserPassById($id))) {
+            return '';
+        } else {
 
-        return false;
+            return 'Incorrect password!';
+        }
     }
 
     public function loginAction(): void
     {
         if (!empty($_POST)) {
-            $result = $this->checkUserData();
-            if ($result) {
-                $_SESSION['welcome'] = $this->model->getUserName($_POST['email']);
+            $errors = $this->checkUserData();
+            if (empty($errors)) {
+                $_SESSION['welcome'] = $this->model->getUserNameByEmail($_POST['email']);
+                $this->view->redirect('/');
             } else {
-                $_SESSION['error'] .= "Incorrect data entered!\n";
+                $data = [
+                    'errors' => $errors,
+                    'email' => $_POST['email']
+                ];
+                $this->view->render($data);
+
+                return;
             }
-            $this->view->redirect('/');
         }
+        var_dump($this->model->getUserIdByEmail('test.mail@gmail.coom'));
         $this->view->render();
     }
 
     public function registerAction(): void
     {
         if (!empty($_POST)) {
-            $result = $this->checkUserData();
-            if ($result) {
-                $_SESSION['welcome'] = $this->model->getUserName($_POST['email']);
+            $errors = FormChecker::checkErrorsInForm();
+            if (empty($errors)) {
+                $hashedPass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+                $dbErrors = $this->model->addNewUser($_POST['email'], $_POST['first-name'], $_POST['second-name'], $hashedPass);
+                if (!empty($dbErrors)) {
+                    $_SESSION['errors'] = $dbErrors;
+                }
+                $_SESSION['newUser'] = $_POST['first-name'];
+                $this->view->redirect('/');
             } else {
-                $_SESSION['error'] .= "Incorrect data entered!\n";
+                $data = [
+                    'errors' => $errors,
+                    'firstName' => $_POST['first-name'],
+                    'secondName' => $_POST['second-name'],
+                    'email' => $_POST['email'],
+                ];
+                $this->view->render($data);
+
+                return;
             }
-            $this->view->redirect('/');
         }
         $this->view->render();
     }
-
 
     public function logoutAction(): void
     {

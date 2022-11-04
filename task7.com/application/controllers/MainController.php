@@ -10,16 +10,27 @@ class MainController extends Controller
     {
         if (isset($_SESSION['welcome'])) {
             $data = [
-                'name' => $_SESSION['welcome']
+                'welcome' => $_SESSION['welcome']
             ];
             $this->view->render($data);
+            return;
         }
-        if (isset($_SESSION['error'])) {
+        if (isset($_SESSION['errors'])) {
             $data = [
-                'errors' => $_SESSION['error']
+                'errors' => $_SESSION['errors']
             ];
             $this->view->render($data);
-            unset($_SESSION['error']);
+            unset($_SESSION['errors']);
+            return;
+        }
+        if (isset($_SESSION['newUser'])) {
+            $data = [
+                'newUser' => $_SESSION['newUser']
+            ];
+            $this->view->render($data);
+            unset($_SESSION['newUser']);
+
+            return;
         }
         $this->view->render();
     }

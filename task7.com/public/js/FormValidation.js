@@ -13,13 +13,13 @@ let passError = document.getElementById('pass-error');
 let passConfError = document.getElementById('pass-confirm-error')
 
 let regularExprForPassWithNumbers =
-    new RegExp(`^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
+    new RegExp(`^(?=.*[0-9])[a-zA-Z0-9.!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
 let regularExprForPassWithSpecialChars =
-    new RegExp(`^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
+    new RegExp(`^(?=.*[.!@#$%^&*])[a-zA-Z0-9.!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
 let regularExprForPassWithCapital =
-    new RegExp(`^(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
+    new RegExp(`^(?=.*[A-Z])[a-zA-Z0-9.!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
 let regularExprForPassWithSmall =
-    new RegExp(`^(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
+    new RegExp(`^(?=.*[a-z])[a-zA-Z0-9.!@#$%^&*]{${PASS_MIN_LENGTH},${PASS_MAX_LENGTH+1}}$`);
 
 function validateFirstName() {
     let firstName = document.getElementById('first-name').value;
@@ -167,6 +167,8 @@ function clearAllFormInputs() {
 togglePassword.addEventListener('click', () => {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
-    passConf.setAttribute('type', type);
+    if (document.getElementById('pass-confirm')) {
+        passConf.setAttribute('type', type);
+    }
     togglePassword.classList.toggle('bi-eye');
 });
