@@ -18,12 +18,10 @@
         {% endif %}
         {% if errors %}
             <div class="alert alert-danger" role="alert">
-                {% for key, error in errors %}
-                    {{ key + 1 }}) {{ error }}<br>
-                {% endfor %}
+                   {{ errors }}<br>
             </div>
             <div class="buttonsMain">
-                <a href="/" class="btn btn-warning">Reload</a>
+                <a href="/" class="btn btn-warning">Go to main</a>
             </div>
         {% elseif welcome %}
             <hr>

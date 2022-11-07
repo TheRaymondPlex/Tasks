@@ -63,12 +63,12 @@ function validateEmail() {
         return false;
     }
 
-    confirmEmail();
-
     if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-        emailError.innerHTML = 'Incorrect Email <i class="bi bi-x-circle-fill"></i>';
+        emailError.innerHTML = 'Email is incorrect <i class="bi bi-x-circle-fill"></i>';
         return false;
     }
+
+    confirmEmail();
 
     emailError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
     return true;
@@ -95,15 +95,8 @@ function validatePass() {
         return false;
     }
 
-    confirmPass();
-
     if (pass.length < PASS_MIN_LENGTH) {
         passError.innerHTML =  (PASS_MIN_LENGTH - pass.length) + ' more characters needed <i class="bi bi-x-circle-fill"></i>';
-        return false;
-    }
-
-    if (pass.length > PASS_MAX_LENGTH) {
-        passError.innerHTML =  'Password max length is '+PASS_MAX_LENGTH+'  <i class="bi bi-x-circle-fill"></i>';
         return false;
     }
 
@@ -124,6 +117,13 @@ function validatePass() {
 
     if (!pass.match(regularExprForPassWithSpecialChars)) {
         passError.innerHTML = 'At least one special char needed <i class="bi bi-x-circle-fill"></i>';
+        return false;
+    }
+
+    confirmPass();
+
+    if (pass.length > PASS_MAX_LENGTH) {
+        passError.innerHTML =  'Password max length is '+PASS_MAX_LENGTH+'  <i class="bi bi-x-circle-fill"></i>';
         return false;
     }
 
@@ -162,6 +162,8 @@ function clearAllFormInputs() {
     emailConfError.innerHTML = '';
     passError.innerHTML = '';
     passConfError.innerHTML = '';
+
+    document.getElementById('register').disabled = true;
 }
 
 togglePassword.addEventListener('click', () => {
@@ -172,3 +174,21 @@ togglePassword.addEventListener('click', () => {
     }
     togglePassword.classList.toggle('bi-eye');
 });
+
+// DEBUG ZONE //
+function autoCompleteRegisterForm() {
+    document.getElementById('first-name').value = 'DebugFirstName';
+    document.getElementById('second-name').value = 'DebugSecondName';
+    document.getElementById('email').value = 'email@debug.com';
+    document.getElementById('email-confirm').value = 'email@debug.com';
+    document.getElementById('pass').value = 'Debug!23';
+    document.getElementById('pass-confirm').value = 'Debug!23';
+    unlockSubmit();
+    document.getElementById('autocomplete').style = "display: none;";
+}
+
+function autoCompleteLoginForm() {
+    document.getElementById('email').value = 'email@debug.com';
+    document.getElementById('pass').value = 'Debug!23';
+    document.getElementById('autocomplete').style = "display: none;";
+}

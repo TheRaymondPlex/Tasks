@@ -8,10 +8,10 @@ use PDOException;
 
 class User extends Model
 {
-    public function addNewUser(string $email, string $firstName, string $secondName, string $pass): string
+    public function addNewUser(string $email, string $firstName, string $secondName, string $pass)
     {
+        $this->db->PDO->beginTransaction();
         try {
-            $this->db->PDO->beginTransaction();
             $this->db->PDO
                 ->query("INSERT INTO users (email, first_name, second_name, pass_word, created_date)
                                   VALUES ('$email', '$firstName', '$secondName', '$pass', now());");
@@ -19,6 +19,10 @@ class User extends Model
             return '';
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
+
+            if ($exception->getCode() == 23000) {
+                return 'Email ' . $email .  ' already exists in database!';
+            }
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -28,8 +32,8 @@ class User extends Model
     {
         try {
             $result = $this->db->oneValue("SELECT id
-                                        FROM users
-                                        WHERE email='$email'");
+                                            FROM users
+                                            WHERE email='$email'");
             return $result;
         } catch (PDOException $exception) {
 
@@ -41,8 +45,8 @@ class User extends Model
     {
         try {
             $result = $this->db->oneValue("SELECT first_name
-                                        FROM users
-                                        WHERE email='$email'");
+                                            FROM users
+                                            WHERE email='$email'");
             return $result;
         } catch (PDOException $exception) {
 
@@ -54,8 +58,8 @@ class User extends Model
     {
         try {
             $result = $this->db->oneValue("SELECT pass_word
-                                        FROM users
-                                        WHERE id='$id'");
+                                            FROM users
+                                            WHERE id='$id'");
             return $result;
         } catch (PDOException $exception) {
 

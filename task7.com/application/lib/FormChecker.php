@@ -16,17 +16,31 @@ class FormChecker
         return htmlspecialchars($data);
     }
 
-    private static function validateName(string $name): void
+    private static function validateFirstName(string $name): void
     {
         $name = self::modifyFormData($name);
         $pattern = "#^[a-zA-Z-' ]*$#";
 
         if (empty($name)) {
-            self::$errors[] = 'Name field is empty!';
+            self::$errors[] = 'First Name field is empty!';
         } elseif (!preg_match($pattern, $name)) {
-            self::$errors[] = 'Only letters and white space can be in Name field!';
-        } elseif (strlen($name) < 3) {
-            self::$errors[] = 'Name is too short! At least 3 characters needed.';
+            self::$errors[] = 'Only letters and white space can be in First Name field!';
+        } elseif (strlen($name) < 2) {
+            self::$errors[] = 'First Name is too short! At least 2 characters needed.';
+        }
+    }
+
+    private static function validateSecondName(string $name): void
+    {
+        $name = self::modifyFormData($name);
+        $pattern = "#^[a-zA-Z-' ]*$#";
+
+        if (empty($name)) {
+            self::$errors[] = 'Second Name field is empty!';
+        } elseif (!preg_match($pattern, $name)) {
+            self::$errors[] = 'Only letters and white space can be in Second Name field!';
+        } elseif (strlen($name) < 2) {
+            self::$errors[] = 'Second Name is too short! At least 2 characters needed.';
         }
     }
 
@@ -56,8 +70,8 @@ class FormChecker
     public static function checkErrorsInForm(): array
     {
         if (isset($_POST)) {
-            self::validateName($_POST['first-name']);
-            self::validateName($_POST['second-name']);
+            self::validateFirstName($_POST['first-name']);
+            self::validateSecondName($_POST['second-name']);
             self::validateEmail($_POST['email']);
             self::validatePassword($_POST['pass']);
         } else {

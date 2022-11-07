@@ -25,6 +25,7 @@ class UserController extends Controller
     {
         if (!empty($_POST)) {
             $errors = $this->checkUserData();
+
             if (empty($errors)) {
                 $_SESSION['welcome'] = $this->model->getUserNameByEmail($_POST['email']);
                 $this->view->redirect('/');
@@ -38,7 +39,6 @@ class UserController extends Controller
                 return;
             }
         }
-        var_dump($this->model->getUserIdByEmail('test.mail@gmail.coom'));
         $this->view->render();
     }
 
@@ -48,11 +48,13 @@ class UserController extends Controller
             $errors = FormChecker::checkErrorsInForm();
             if (empty($errors)) {
                 $hashedPass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-                $dbErrors = $this->model->addNewUser($_POST['email'], $_POST['first-name'], $_POST['second-name'], $hashedPass);
+                $dbErrors = $this->model
+                    ->addNewUser($_POST['email'], $_POST['first-name'], $_POST['second-name'], $hashedPass);
                 if (!empty($dbErrors)) {
-                    $_SESSION['errors'] = $dbErrors;
+                    $_SESSION['dbError'] = $dbErrors;
+                } else {
+                    $_SESSION['newUser'] = $_POST['first-name'];
                 }
-                $_SESSION['newUser'] = $_POST['first-name'];
                 $this->view->redirect('/');
             } else {
                 $data = [
