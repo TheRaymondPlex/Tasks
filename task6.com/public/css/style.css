@@ -1,3 +1,15 @@
+body {
+    background-color: rgb(35, 37, 50);
+}
+
+h1 {
+    color: white;
+}
+
+form h1 {
+    color: black;
+}
+
 .container {
     min-height: 80vh;
     display: flex;

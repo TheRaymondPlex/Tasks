@@ -2,18 +2,11 @@
 {% block title %}
     Login
 {% endblock %}
-{% block style %}
-    <style>
-        body {
-            background-color: rgb(35, 37, 50);
-        }
-    </style>
-{% endblock %}
 {% block content %}
     <div class="container">
         {% if name %}
             <hr>
-            <h1 style="color: white">Welcome back, {{ name }}!</h1>
+            <h1>Welcome back, {{ name }}!</h1>
             <hr>
             <div class="buttonsMain">
                 <a href="/user/logout" class="btn btn-danger">Logout</a>

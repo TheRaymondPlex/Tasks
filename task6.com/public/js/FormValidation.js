@@ -37,12 +37,12 @@ function validatePass() {
 
 }
 
-function unlockSubmit() {
+function validateForm() {
     let login = document.getElementById('login');
     login.disabled = !(validateEmail() && validatePass());
 }
 
-function clearAllFormInputs() {
+function clearFields() {
     passError.innerHTML = '';
     emailError.innerHTML = '';
 }

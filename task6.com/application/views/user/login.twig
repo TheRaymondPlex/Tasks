@@ -2,13 +2,6 @@
 {% block title %}
     Login
 {% endblock %}
-{% block style %}
-    <style>
-        body {
-            background-color: rgb(35, 37, 50);
-        }
-    </style>
-{% endblock %}
 {% block script %}/public/js/FormValidation.js{% endblock %}
 {% block content %}
     <div class="container">
@@ -30,7 +23,7 @@
                        name="email"
                        value=""
                        placeholder="Enter your login (Email)"
-                       onkeyup = "validateEmail(); unlockSubmit()">
+                       onkeyup = "validateForm()">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
 
@@ -43,12 +36,12 @@
                        name="pass"
                        value=""
                        placeholder="Enter your password"
-                       onkeyup = "validatePass(); unlockSubmit()">
+                       onkeyup = "validateForm()">
             </div>
 
             <div class="buttonsMain">
                 <a href="/" class="btn btn-secondary">Cancel</a>
-                <button type="reset" onclick="clearAllFormInputs()" class="btn btn-dark">Clear</button>
+                <button type="reset" onclick="clearFields()" class="btn btn-dark">Clear</button>
                 <button id="login" type="submit" class="btn btn-success" disabled>Login</button>
             </div>
 
