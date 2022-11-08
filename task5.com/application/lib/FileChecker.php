@@ -2,11 +2,14 @@
 
 namespace application\lib;
 
+use PNGMetadata\PNGMetadata;
+
 class FileChecker
 {
     private const MAX_SIZE = 1000000; // Max size for single file upload
     public const UPLOADS_FOLDER_PATH = 'uploads/'; // Default folder for uploads
     private const LOGS_FOLDER_PATH = 'application/logs/'; //Default folder for logs
+    private static array $arrNew = [];
 
     private static array $allowedImageTypes = [ // Allowed image types that can be uploaded
         'jpg' => 'image/jpeg',
@@ -37,33 +40,50 @@ class FileChecker
         return false;
     }
 
-    private static function composingMetaArray($arr) {
-        if (!is_array($arr)) {
-            return false;
-        }
-        $newArr = array();
-        foreach ($arr as $key => $item) {
-            if (is_array($item)) {
-                $newArr = array_merge($arr, self::composingMetaArray($item));
-                unset($newArr[$key]);
-            } else {
-                $newArr[$key] = $item;
+    private static function deleteOldArraysInArray(array $arr): array
+    {
+        foreach ($arr as $key => $value) {
+            if (is_array($value)) {
+                unset($arr[$key]);
             }
         }
 
-        return $newArr;
+        return $arr;
+    }
+
+    private static function composingMetaArray($arr): array
+    {
+        foreach ($arr as $key => $item) {
+            if (is_array($item)) {
+                self::$arrNew = array_merge($arr, self::composingMetaArray($item));
+            } else {
+                self::$arrNew[$key] = $item;
+            }
+        }
+        return self::$arrNew;
     }
 
     private static function getImageMetaDataInArray(string $upload): array
     {
-        $metas = exif_read_data($upload);
+        if (PNGMetadata::isPNG($upload)) {
+            $metas = PNGMetadata::extract($upload)->toArray();
+        } else {
+            $metas = exif_read_data($upload);
+        }
 
-        return self::composingMetaArray($metas);
+        $composedMetaArray = self::composingMetaArray($metas);
+        $composedMetaArray = self::deleteOldArraysInArray($composedMetaArray);
+        self::$arrNew = [];
+        /*
+        Мне вот вообще не нравится такое решение с использованием self::$arrNew и self::deleteOldArraysInArray().
+        Хочется всего одной функцией выполнять распаковки вложенных подмассивов и там же чистить лишнее.
+        */
+        return $composedMetaArray;
     }
 
     public static function deleteDots(string $folderPath): array
     {
-        $filesWithoutDots = array_diff(scandir($folderPath), array('..', '.')); // Избавляемся от точек в массиве с файлами
+        $filesWithoutDots = array_diff(scandir($folderPath), array('..', '.'));
 
         return array_values($filesWithoutDots);
     }
@@ -80,8 +100,16 @@ class FileChecker
         }
 
         if (!file_exists(self::LOGS_FOLDER_PATH)) {
-            mkdir(self::LOGS_FOLDER_PATH, 0777, true);
+            try {
+                if (!mkdir(self::LOGS_FOLDER_PATH, 0777, true)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', self::LOGS_FOLDER_PATH));
+                }
+            } catch (\RuntimeException $exception) {
+                echo $exception->getMessage() . "<br>";
+                return;
+            }
         }
+
         if (!file_exists($pathToLogFile)) {
             file_put_contents($pathToLogFile, '');
         }

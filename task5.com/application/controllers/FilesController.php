@@ -31,8 +31,16 @@ class FilesController extends Controller
             $uploadsDirPath = FileChecker::UPLOADS_FOLDER_PATH;
             if (!file_exists($uploadsDirPath)) {
                 FileChecker::createLog('upload', $uploadsDirPath . " folder does not exist. Creating...");
-                mkdir($uploadsDirPath, 0777, true);
-                FileChecker::createLog('upload', $uploadsDirPath . " created.");
+                try {
+                    if (!mkdir($uploadsDirPath, 0777, true)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadsDirPath));
+                    }
+                    FileChecker::createLog('upload', $uploadsDirPath . " created.");
+                } catch (\RuntimeException $exception) {
+                    FileChecker::createLog('upload', $exception->getMessage());
+                    echo $exception->getMessage() . "<br>";
+                    return false;
+                }
             }
 
             $errors = FileChecker::validatingFilesOnUpload();
@@ -47,7 +55,6 @@ class FilesController extends Controller
 
             $this->model->uploadFile($uploadsDirPath);
             $this->view->redirect('/');
-            return true;
         }
         $this->view->render();
 
