@@ -2,18 +2,11 @@
 {% block title %}
     Main
 {% endblock %}
-{% block style %}
-    <style>
-        body {
-            background-color: rgb(35, 37, 50);
-        }
-    </style>
-{% endblock %}
 {% block content %}
     <div class="container">
         {% if newUser %}
             <hr>
-            <h1 style="color: white">Congratulations, <b>{{ newUser }}</b>! Your account was successfully created!</h1>
+            <h1>Congratulations, <b>{{ newUser }}</b>! Your account was successfully created!</h1>
             <hr>
         {% endif %}
         {% if errors %}
@@ -25,7 +18,7 @@
             </div>
         {% elseif welcome %}
             <hr>
-            <h1 style="color: white">Hello, <b>{{ welcome }}</b>! Welcome back!</h1>
+            <h1>Hello, <b>{{ welcome }}</b>! Welcome back!</h1>
             <hr>
             <div class="buttonsMain">
                 <a href="/user/logout" class="btn btn-danger">Logout</a>

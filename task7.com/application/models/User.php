@@ -13,8 +13,8 @@ class User extends Model
         $this->db->PDO->beginTransaction();
         try {
             $this->db->PDO
-                ->query("INSERT INTO users (email, first_name, second_name, pass_word, created_date)
-                                  VALUES ('$email', '$firstName', '$secondName', '$pass', now());");
+                ->query("INSERT INTO users (email, first_name, second_name, pass_word)
+                                  VALUES ('$email', '$firstName', '$secondName', '$pass');");
             $this->db->PDO->commit();
             return '';
         } catch (PDOException $exception) {
