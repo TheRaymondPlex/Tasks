@@ -9,7 +9,7 @@ class FileChecker
     private const MAX_SIZE = 1000000; // Max size for single file upload
     public const UPLOADS_FOLDER_PATH = 'uploads/'; // Default folder for uploads
     private const LOGS_FOLDER_PATH = 'application/logs/'; //Default folder for logs
-    private static array $arrNew = [];
+    private static array $composedImageMeta = [];
 
     private static array $allowedImageTypes = [ // Allowed image types that can be uploaded
         'jpg' => 'image/jpeg',
@@ -40,27 +40,18 @@ class FileChecker
         return false;
     }
 
-    private static function deleteOldArraysInArray(array $arr): array
-    {
-        foreach ($arr as $key => $value) {
-            if (is_array($value)) {
-                unset($arr[$key]);
-            }
-        }
-
-        return $arr;
-    }
-
     private static function composingMetaArray($arr): array
     {
+        self::$composedImageMeta = [];
         foreach ($arr as $key => $item) {
             if (is_array($item)) {
-                self::$arrNew = array_merge($arr, self::composingMetaArray($item));
+                self::$composedImageMeta = array_merge(self::$composedImageMeta, self::composingMetaArray($item));
             } else {
-                self::$arrNew[$key] = $item;
+                self::$composedImageMeta[$key] = $item;
             }
         }
-        return self::$arrNew;
+        
+        return self::$composedImageMeta;
     }
 
     private static function getImageMetaDataInArray(string $upload): array
@@ -71,14 +62,7 @@ class FileChecker
             $metas = exif_read_data($upload);
         }
 
-        $composedMetaArray = self::composingMetaArray($metas);
-        $composedMetaArray = self::deleteOldArraysInArray($composedMetaArray);
-        self::$arrNew = [];
-        /*
-        Мне вот вообще не нравится такое решение с использованием self::$arrNew и self::deleteOldArraysInArray().
-        Хочется всего одной функцией выполнять распаковки вложенных подмассивов и там же чистить лишнее.
-        */
-        return $composedMetaArray;
+        return self::composingMetaArray($metas);
     }
 
     public static function deleteDots(string $folderPath): array
