@@ -1,6 +1,9 @@
 const PASS_MIN_LENGTH = 6;
 const PASS_MAX_LENGTH = 15;
 
+const GREEN_CHECK_SIGN = '<i class="bi bi-check-circle-fill"></i>';
+const RED_CROSS_SIGN = '<i class="bi bi-x-circle-fill"></i>';
+
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#pass');
 const passConf = document.querySelector('#pass-confirm');
@@ -25,16 +28,16 @@ function validateFirstName() {
     let firstName = document.getElementById('first-name').value;
 
     if (firstName.length === 0) {
-        firstNameError.innerHTML = 'First name is required <i class="bi bi-x-circle-fill"></i>';
+        firstNameError.innerHTML = 'First name is required ' + RED_CROSS_SIGN;
         return false;
     }
 
-    if (!firstName.match(/^[A-zА-я ]+$/)) {
-        firstNameError.innerHTML = 'Incorrect symbols <i class="bi bi-x-circle-fill"></i>';
+    if (!firstName.match(/^[A-zА-я-]+$/)) {
+        firstNameError.innerHTML = 'Incorrect symbols ' + RED_CROSS_SIGN;
         return false;
     }
 
-    firstNameError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    firstNameError.innerHTML = GREEN_CHECK_SIGN;
     return true;
 }
 
@@ -42,16 +45,16 @@ function validateSecondName() {
     let secondName = document.getElementById('second-name').value;
 
     if (secondName.length === 0) {
-        secondNameError.innerHTML = 'Second name is required <i class="bi bi-x-circle-fill"></i>';
+        secondNameError.innerHTML = 'Second name is required ' + RED_CROSS_SIGN;
         return false;
     }
 
-    if (!secondName.match(/^[A-zА-я ]+$/)) {
-        secondNameError.innerHTML = 'Incorrect symbols <i class="bi bi-x-circle-fill"></i>';
+    if (!secondName.match(/^[A-zА-я-]+$/)) {
+        secondNameError.innerHTML = 'Incorrect symbols ' + RED_CROSS_SIGN;
         return false;
     }
 
-    secondNameError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    secondNameError.innerHTML = GREEN_CHECK_SIGN;
     return true;
 }
 
@@ -59,18 +62,18 @@ function validateEmail() {
     let email = document.getElementById('email').value;
 
     if (email.length === 0) {
-        emailError.innerHTML = 'Email is required <i class="bi bi-x-circle-fill"></i>';
+        emailError.innerHTML = 'Email is required ' + RED_CROSS_SIGN;
         return false;
     }
 
     if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-        emailError.innerHTML = 'Email is incorrect <i class="bi bi-x-circle-fill"></i>';
+        emailError.innerHTML = 'Email is incorrect ' + RED_CROSS_SIGN;
         return false;
     }
 
     confirmEmail();
 
-    emailError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    emailError.innerHTML = GREEN_CHECK_SIGN;
     return true;
 }
 
@@ -79,11 +82,11 @@ function confirmEmail() {
     let emailConf = document.getElementById('email-confirm').value;
 
     if (email !== emailConf) {
-        emailConfError.innerHTML = 'Email does not match <i class="bi bi-x-circle-fill"></i>';
+        emailConfError.innerHTML = 'Email does not match ' + RED_CROSS_SIGN;
         return false;
     }
 
-    emailConfError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    emailConfError.innerHTML = GREEN_CHECK_SIGN;
     return true;
 }
 
@@ -91,43 +94,43 @@ function validatePass() {
     let pass = document.getElementById('pass').value;
 
     if (pass.length === 0) {
-        passError.innerHTML = 'Password is required <i class="bi bi-x-circle-fill"></i>';
+        passError.innerHTML = 'Password is required ' + RED_CROSS_SIGN;
         return false;
     }
 
     if (pass.length < PASS_MIN_LENGTH) {
-        passError.innerHTML =  (PASS_MIN_LENGTH - pass.length) + ' more characters needed <i class="bi bi-x-circle-fill"></i>';
+        passError.innerHTML =  (PASS_MIN_LENGTH - pass.length) + ' more characters needed ' + RED_CROSS_SIGN;
         return false;
     }
 
     if (!pass.match(regularExprForPassWithCapital)) {
-        passError.innerHTML = 'At least one capital character needed <i class="bi bi-x-circle-fill"></i>';
+        passError.innerHTML = 'At least one capital character needed ' + RED_CROSS_SIGN;
         return false;
     }
 
     if (!pass.match(regularExprForPassWithSmall)) {
-        passError.innerHTML = 'At least one small character needed <i class="bi bi-x-circle-fill"></i>';
+        passError.innerHTML = 'At least one small character needed ' + RED_CROSS_SIGN;
         return false;
     }
 
     if (!pass.match(regularExprForPassWithNumbers)) {
-        passError.innerHTML = 'At least one number needed <i class="bi bi-x-circle-fill"></i>';
+        passError.innerHTML = 'At least one number needed ' + RED_CROSS_SIGN;
         return false;
     }
 
     if (!pass.match(regularExprForPassWithSpecialChars)) {
-        passError.innerHTML = 'At least one special char needed <i class="bi bi-x-circle-fill"></i>';
+        passError.innerHTML = 'At least one special char needed ' + RED_CROSS_SIGN;
+        return false;
+    }
+
+    if (pass.length > PASS_MAX_LENGTH) {
+        passError.innerHTML =  'Password max length is '+PASS_MAX_LENGTH+'  ' + RED_CROSS_SIGN;
         return false;
     }
 
     confirmPass();
 
-    if (pass.length > PASS_MAX_LENGTH) {
-        passError.innerHTML =  'Password max length is '+PASS_MAX_LENGTH+'  <i class="bi bi-x-circle-fill"></i>';
-        return false;
-    }
-
-    passError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    passError.innerHTML = GREEN_CHECK_SIGN;
     return true;
 }
 
@@ -136,11 +139,11 @@ function confirmPass() {
     let passConf = document.getElementById('pass-confirm').value;
 
     if (pass !== passConf) {
-        passConfError.innerHTML = 'Password does not match <i class="bi bi-x-circle-fill"></i>';
+        passConfError.innerHTML = 'Password does not match ' + RED_CROSS_SIGN;
         return false;
     }
 
-    passConfError.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    passConfError.innerHTML = GREEN_CHECK_SIGN;
     return true;
 }
 
