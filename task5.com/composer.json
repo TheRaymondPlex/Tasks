@@ -1,0 +1,9 @@
+{
+  "require": {
+    "twig/twig": "^3.0",
+    "ext-curl": "*",
+    "ext-exif": "*",
+    "ext-fileinfo": "*",
+    "joserick/png-metadata": "^0.2.7"
+  }
+}
