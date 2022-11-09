@@ -50,7 +50,7 @@ class FileChecker
                 self::$composedImageMeta[$key] = $item;
             }
         }
-        
+
         return self::$composedImageMeta;
     }
 
