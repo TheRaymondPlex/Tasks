@@ -147,7 +147,7 @@ function confirmPass() {
     return true;
 }
 
-function unlockSubmit() {
+function validateForm() {
     let register = document.getElementById('register');
     register.disabled = !(
         validateFirstName() &&
@@ -186,7 +186,7 @@ function autoCompleteRegisterForm() {
     document.getElementById('email-confirm').value = 'email@debug.com';
     document.getElementById('pass').value = 'Debug!23';
     document.getElementById('pass-confirm').value = 'Debug!23';
-    unlockSubmit();
+    validateForm();
     document.getElementById('autocomplete').style = "display: none;";
 }
 
