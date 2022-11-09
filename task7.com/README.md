@@ -4,7 +4,7 @@
 # Run the application
 - run `git clone https://github.com/TheRaymondPlex/Tasks`.
 - run `cd Tasks`.
-- run `git checkout Task4`.
+- run `git checkout Task7`.
 - run `git pull`.
 - Install composer dependencies with `composer install`.
 - Rename `.env.example` file to `.env`.
