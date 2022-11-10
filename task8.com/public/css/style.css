@@ -8,6 +8,9 @@
         position: fixed;
         color: white;
         text-align: center;
+        width: 100%;
+        background-color: rgb(35, 37, 50);
+        z-index: 6;
     }
 
     h4 {
@@ -70,6 +73,7 @@
         bottom: 0;
         left: 0;
         position: fixed;
+        z-index: 6;
     }
 
     .buttonRight {
@@ -120,7 +124,6 @@
         text-align: center;
         padding-left: 100%;
     }
-
 }
 
 @media only screen and (min-width: 600px) {

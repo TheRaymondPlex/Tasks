@@ -4,6 +4,7 @@ namespace application\models;
 
 use application\core\Model;
 use application\lib\Db;
+use DateTime;
 use PDOException;
 
 class User extends Model
@@ -92,6 +93,77 @@ class User extends Model
                                             WHERE access_token='$accessToken'");
             return $result;
         } catch (PDOException $exception) {
+
+            return 'PDOException: ' . $exception->getMessage();
+        }
+    }
+
+    public function addNewAttacker(string $attackerIp): string
+    {
+        $this->db->PDO->beginTransaction();
+        try {
+            $this->db->PDO
+                ->query("INSERT INTO auth_attacks (attacker_ip, failed_tries_count)
+                                  VALUES ('$attackerIp', 1);");
+            $this->db->PDO->commit();
+            return '';
+        } catch (PDOException $exception) {
+            $this->db->PDO->rollBack();
+
+            return 'PDOException: ' . $exception->getMessage();
+        }
+    }
+
+    public function getAttackerTriesByIp(string $attackerIp): string
+    {
+        return $this->db->oneValue("SELECT failed_tries_count
+                                        FROM auth_attacks
+                                        WHERE attacker_ip='$attackerIp';");
+    }
+
+    public function updateAttackerByIp(string $attackerIp): string
+    {
+        $this->db->PDO->beginTransaction();
+        try {
+            $this->db->PDO
+                ->query("UPDATE auth_attacks
+                                SET failed_tries_count = failed_tries_count + 1
+                                WHERE attacker_ip = '$attackerIp';");
+            $this->db->PDO->commit();
+            return '';
+        } catch (PDOException $exception) {
+            $this->db->PDO->rollBack();
+
+            return 'PDOException: ' . $exception->getMessage();
+        }
+    }
+
+    public function deleteAttackerByIp(string $attackerIp): string
+    {
+        $this->db->PDO->beginTransaction();
+        try {
+            $this->db->PDO
+                ->query("DELETE FROM auth_attacks
+                                WHERE attacker_ip = '$attackerIp';");
+            $this->db->PDO->commit();
+            return '';
+        } catch (PDOException $exception) {
+            $this->db->PDO->rollBack();
+
+            return 'PDOException: ' . $exception->getMessage();
+        }
+    }
+
+    public function addNewBlockedIp(string $ip): string {
+        $this->db->PDO->beginTransaction();
+        try {
+            $this->db->PDO
+                ->query("INSERT INTO blocked_ips (ip)
+                                  VALUES ('$ip');");
+            $this->db->PDO->commit();
+            return '';
+        } catch (PDOException $exception) {
+            $this->db->PDO->rollBack();
 
             return 'PDOException: ' . $exception->getMessage();
         }

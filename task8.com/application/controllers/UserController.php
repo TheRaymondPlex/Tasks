@@ -8,10 +8,30 @@ use http\Cookie;
 
 class UserController extends Controller
 {
+    private function checkIp($ip) {
+        $attackerTriesCount = $this->model->getAttackerTriesByIp($ip);
+        if (empty($attackerTriesCount)) {
+            $this->model->addNewAttacker($ip);
+            return;
+        }
+        if ($attackerTriesCount === '1') {
+            $this->model->updateAttackerByIp($ip);
+            return;
+        }
+        $this->blockIp($ip);
+        $this->model->deleteAttackerByIp($ip);
+    }
+
+    private function blockIp(string $ip) {
+        $this->model->addNewBlockedIp($ip);
+        $this->view->redirect('/');
+    }
+
     private function checkUserDataFromPost(): string
     {
         $id = $this->model->getUserIdByEmail($_POST['email']);
         if (empty($id)) {
+            $this->checkIp($_SERVER['REMOTE_ADDR']);
             return 'There is no such user!';
         }
         if (!password_verify($_POST['pass'], $this->model->getUserPassById($id))) {
@@ -126,7 +146,6 @@ class UserController extends Controller
             );
         }
         session_destroy();
-//        setcookie(session_name(), '', time() -1);
         $this->view->redirect('/');
     }
 }

@@ -8,6 +8,11 @@ class MainController extends Controller
 {
     public function indexAction(): void
     {
+        $blockedIps = $this->model->getBlockedIps();
+        if (in_array($_SERVER['REMOTE_ADDR'], $blockedIps)) {
+            // проверка на 15 минут
+            die('You was banned for 15 minutes!');
+        }
         if (isset($_SESSION['name'])) {
             $data = [
                 'name' => $_SESSION['name']
