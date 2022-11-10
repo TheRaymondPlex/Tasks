@@ -1,0 +1,28 @@
+{% extends 'layouts/default.twig' %}
+{% block script %}<script src="/public/js/FileValidation.js"></script> {% endblock %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+<div class="container">
+    <form enctype="multipart/form-data" action="/file/upload" method="post">
+        <h1 class="display-6 text-center">UPLOAD NEW FILE</h1>
+        <hr>
+        {% if errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ errors|nl2br }}
+        </div>
+        {% endif %}
+        <input class="form-control" type="file" id="formFile" name="filename" onchange="FileValidation();">
+        <br>
+        <div class="buttonsInForm">
+            <a href="/file" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+        <br>
+        <div class="preview">
+            <img src="" id="file-ip-1-preview">
+        </div>
+        <br>
+        <div id="size" class="text-center"></div>
+    </form>
+</div>
+{% endblock %}

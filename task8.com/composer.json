@@ -1,0 +1,11 @@
+{
+  "require": {
+    "twig/twig": "^3.0",
+    "vlucas/phpdotenv": "^5.5",
+    "ext-pdo": "*",
+    "ext-exif": "*",
+    "ext-fileinfo": "*",
+    "joserick/png-metadata": "^0.2.7",
+    "ext-http": "*"
+  }
+}

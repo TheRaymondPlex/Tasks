@@ -1,0 +1,103 @@
+{% extends 'layouts/default.twig' %}
+{% block title %}
+    Sign Up
+{% endblock %}
+{% block script %}<script src="/public/js/SignUpValidation.js"></script>{% endblock %}
+{% block content %}
+    <div class="container">
+        <form action="/user/register" method="post" id="login-form">
+            <h1 class="display-5 text-center">SIGN UP</h1>
+            <hr>
+            {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    {% for key, error in errors %}
+                        {{ key + 1 }}) {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <br>
+            <div class="mb-3">
+                <label for="first-name" class="form-label">First Name</label>
+                <span id="first-name-error"></span>
+                <input type="text"
+                       class="form-control"
+                       id="first-name"
+                       name="first-name"
+                       value="{% if firstName %}{{ firstName }}{% endif %}"
+                       placeholder="Enter your first name"
+                       onkeyup="validateForm()">
+            </div>
+
+            <div class="mb-3">
+                <label for="second-name" class="form-label">Second Name</label>
+                <span id="second-name-error"></span>
+                <input type="text"
+                       class="form-control"
+                       id="second-name"
+                       name="second-name"
+                       value="{% if secondName %}{{ secondName }}{% endif %}"
+                       placeholder="Enter your second name"
+                       onkeyup = "validateForm()">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <span id="email-error"></span>
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       name="email"
+                       value="{% if email %}{{ email }}{% endif %}"
+                       placeholder="Enter your Email"
+                       onkeyup = "validateForm()">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email-confirm" class="form-label">Email Confirmation</label>
+                <span id="email-confirm-error"></span>
+                <input type="email"
+                       class="form-control"
+                       id="email-confirm"
+                       name="email-confirm"
+                       value=""
+                       placeholder="Enter Email again"
+                       onkeyup = "validateForm()">
+            </div>
+
+            <div class="mb-3">
+                <label for="pass" class="form-label">Password</label>
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
+                <span id="pass-error"></span>
+                <input type="password"
+                       class="form-control"
+                       id="pass"
+                       name="pass"
+                       value=""
+                       placeholder="Enter your password"
+                       onkeyup = "validateForm()">
+                <div id="passHelp" class="form-text">Your password will be hashed. We'll never know it.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="pass-confirm" class="form-label">Password Confirmation</label>
+                <span id="pass-confirm-error"></span>
+                <input type="password"
+                       class="form-control"
+                       id="pass-confirm"
+                       name="pass-confirm"
+                       value=""
+                       placeholder="Enter password again"
+                       onkeyup = "validateForm()">
+            </div>
+
+            <div class="buttonsInForm">
+                <a href="/" class="btn btn-secondary">Cancel</a>
+                <button type="reset" onclick="clearFields()" class="btn btn-dark">Clear</button>
+                <button id="autocomplete" type="button" onclick="autoCompleteRegisterForm()" class="btn btn-warning">Auto Complete</button>
+                <button id="register" type="submit" class="btn btn-success" disabled>Register</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
