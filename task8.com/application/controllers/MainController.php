@@ -6,12 +6,21 @@ use application\core\Controller;
 
 class MainController extends Controller
 {
+    private const BLOCK_DURATION = 900; // seconds
+
     public function indexAction(): void
     {
         $blockedIps = $this->model->getBlockedIps();
         if (in_array($_SERVER['REMOTE_ADDR'], $blockedIps)) {
-            // проверка на 15 минут
-            die('You was banned for 15 minutes!');
+            $blockDate = strtotime($this->model->getBlockDate($_SERVER['REMOTE_ADDR']));
+            $unblockDate = $blockDate + self::BLOCK_DURATION;
+            $secondsLeft = round($unblockDate - time());
+
+            if (time() < $unblockDate) {
+                die('You was banned for 15 minutes! Time left: ' . date('i:s', $secondsLeft)) . '.';
+            } else {
+                $this->model->removeBlockedIp($_SERVER['REMOTE_ADDR']);
+            }
         }
         if (isset($_SESSION['name'])) {
             $data = [

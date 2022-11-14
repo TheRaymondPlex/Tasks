@@ -18,8 +18,8 @@ class UserController extends Controller
             $this->model->updateAttackerByIp($ip);
             return;
         }
-        $this->blockIp($ip);
         $this->model->deleteAttackerByIp($ip);
+        $this->blockIp($ip);
     }
 
     private function blockIp(string $ip) {
@@ -35,6 +35,7 @@ class UserController extends Controller
             return 'There is no such user!';
         }
         if (!password_verify($_POST['pass'], $this->model->getUserPassById($id))) {
+            $this->checkIp($_SERVER['REMOTE_ADDR']);
             return 'Incorrect password!';
         }
 

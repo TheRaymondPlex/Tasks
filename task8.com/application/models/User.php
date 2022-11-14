@@ -4,7 +4,6 @@ namespace application\models;
 
 use application\core\Model;
 use application\lib\Db;
-use DateTime;
 use PDOException;
 
 class User extends Model
