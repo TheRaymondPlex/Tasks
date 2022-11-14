@@ -30,20 +30,23 @@ form h1 {
     background-color: rgb(232, 234, 236);
 }
 
-.mb-3 {
+.relfield {
     position: relative;
 }
 
-.mb-3 span {
+.relfield span {
     position: absolute;
     right: 5px;
-    color: red;
+    color:red;
     font-size: 15px;
 }
 
-.bi-check-circle-fill {
+.sign-red {
+    color: darkred;
+}
+
+.sign-green {
     color: forestgreen;
-    font-size: 15px;
 }
 
 .buttonsMain {
@@ -57,30 +60,4 @@ form h1 {
 
 .buttonsMain button {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.buttonRight {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.buttonRight a {
-    margin-right: 15px;
-}
-
-.box {
-    width: 1200px;
-}
-
-.container table {
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.preview {
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

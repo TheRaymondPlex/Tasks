@@ -8,6 +8,8 @@ use PDOException;
 
 class User extends Model
 {
+    private const RECORD_ALREADY_EXISTS_ERROR_CODE = 23000;
+
     public function addNewUser(string $email, string $firstName, string $secondName, string $pass)
     {
         $this->db->PDO->beginTransaction();
@@ -20,7 +22,7 @@ class User extends Model
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
 
-            if ($exception->getCode() == 23000) {
+            if ($exception->getCode() == self::RECORD_ALREADY_EXISTS_ERROR_CODE) {
                 return 'Email ' . $email .  ' already exists in database!';
             }
 

@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use application\core\Router;
 
@@ -22,8 +23,6 @@ try {
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-
-session_start();
 
 $router = new Router;
 $router->run();

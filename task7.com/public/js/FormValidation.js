@@ -1,12 +1,13 @@
 const PASS_MIN_LENGTH = 6;
 const PASS_MAX_LENGTH = 15;
 
-const GREEN_CHECK_SIGN = '<i class="bi bi-check-circle-fill"></i>';
-const RED_CROSS_SIGN = '<i class="bi bi-x-circle-fill"></i>';
+const GREEN_CHECK_SIGN = '<i class="bi bi-check-circle-fill sign-green"></i>';
+const RED_CROSS_SIGN = '<i class="bi bi-x-circle-fill sign-red"></i>';
 
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#pass');
 const passConf = document.querySelector('#pass-confirm');
+const registerButton = document.getElementById('register');
 
 let firstNameError = document.getElementById('first-name-error')
 let secondNameError = document.getElementById('second-name-error')
@@ -124,7 +125,7 @@ function validatePass() {
     }
 
     if (pass.length > PASS_MAX_LENGTH) {
-        passError.innerHTML =  'Password max length is '+PASS_MAX_LENGTH+'  ' + RED_CROSS_SIGN;
+        passError.innerHTML =  'Password max length is '+PASS_MAX_LENGTH+'  ' + RED_CROSS_SIGN
         return false;
     }
 
@@ -148,8 +149,7 @@ function confirmPass() {
 }
 
 function validateForm() {
-    let register = document.getElementById('register');
-    register.disabled = !(
+    registerButton.disabled = !(
         validateFirstName() &&
         validateSecondName() &&
         validateEmail() &&
@@ -159,14 +159,14 @@ function validateForm() {
 }
 
 function clearAllFormInputs() {
+    document.getElementById('autocomplete').style.display = "block";
     firstNameError.innerHTML = '';
     secondNameError.innerHTML = '';
     emailError.innerHTML = '';
     emailConfError.innerHTML = '';
     passError.innerHTML = '';
     passConfError.innerHTML = '';
-
-    document.getElementById('register').disabled = true;
+    registerButton.disabled = true;
 }
 
 togglePassword.addEventListener('click', () => {
@@ -187,11 +187,11 @@ function autoCompleteRegisterForm() {
     document.getElementById('pass').value = 'Debug!23';
     document.getElementById('pass-confirm').value = 'Debug!23';
     validateForm();
-    document.getElementById('autocomplete').style = "display: none;";
+    document.getElementById('autocomplete').style.display = "none";
 }
 
 function autoCompleteLoginForm() {
     document.getElementById('email').value = 'email@debug.com';
     document.getElementById('pass').value = 'Debug!23';
-    document.getElementById('autocomplete').style = "display: none;";
+    document.getElementById('autocomplete').style.display = "none";
 }
