@@ -1,9 +1,0 @@
-![Innowise Group Logo](public/images/inno-logo.png)
-# Task 4 solution
-
-# Run the application
-- run `git clone https://github.com/TheRaymondPlex/Tasks/tree/Task4`.
-- Install composer for PHP if you don't have it already.
-- Install composer dependencies with `composer install`.
-- Rename `.env.example` file to `.env`.
-- Fill the required fields in `.env` file with correct data.
