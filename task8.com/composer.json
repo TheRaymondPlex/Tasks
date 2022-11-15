@@ -6,6 +6,7 @@
     "ext-exif": "*",
     "ext-fileinfo": "*",
     "joserick/png-metadata": "^0.2.7",
-    "ext-http": "*"
+    "twbs/bootstrap": "5.2.*",
+    "twbs/bootstrap-icons": "^1.10"
   }
 }

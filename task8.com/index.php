@@ -1,6 +1,8 @@
 <?php
+session_start();
 
 use application\core\Router;
+use application\lib\Logger;
 
 spl_autoload_register(function ($class) {
     $path = str_replace('\\', '/', $class . '.php');
@@ -16,14 +18,13 @@ try {
     }
     require_once 'vendor/autoload.php';
 } catch (Exception $exception) {
+    Logger::createLog('error', $exception->getMessage());
     echo $exception->getMessage();
     die();
 }
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-
-session_start();
 
 $router = new Router;
 $router->run();

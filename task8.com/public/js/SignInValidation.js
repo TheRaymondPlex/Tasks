@@ -1,7 +1,9 @@
 const PASS_MIN_LENGTH = 6;
 
-const GREEN_CHECK_SIGN = '<i class="bi bi-check-circle-fill"></i>';
-const RED_CROSS_SIGN = '<i class="bi bi-x-circle-fill"></i>';
+const GREEN_CHECK_SIGN = '<i class="bi bi-check-circle-fill sign-green"></i>';
+const RED_CROSS_SIGN = '<i class="bi bi-x-circle-fill sign_red"></i>';
+
+const loginButton = document.getElementById('login');
 
 let emailError = document.getElementById('email-error');
 let passError = document.getElementById('pass-error');
@@ -49,8 +51,10 @@ function validateForm() {
 }
 
 function clearFields() {
+    document.getElementById('autocomplete').style.display = "block";
     passError.innerHTML = '';
     emailError.innerHTML = '';
+    loginButton.disabled = true;
 }
 
 togglePassword.addEventListener('click', () => {
@@ -67,5 +71,5 @@ function autoCompleteLoginForm() {
     document.getElementById('email').value = 'email@debug.com';
     document.getElementById('pass').value = 'Debug!23';
     validateForm();
-    document.getElementById('autocomplete').style = "display: none;";
+    document.getElementById('autocomplete').style.display = "none";
 }

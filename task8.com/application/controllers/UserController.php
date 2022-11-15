@@ -4,26 +4,46 @@ namespace application\controllers;
 
 use application\core\Controller;
 use application\lib\FormChecker;
-use http\Cookie;
+use application\lib\Logger;
 
 class UserController extends Controller
 {
-    private function checkIp($ip) {
+    private function checkIp($ip)
+    {
         $attackerTriesCount = $this->model->getAttackerTriesByIp($ip);
         if (empty($attackerTriesCount)) {
             $this->model->addNewAttacker($ip);
+
+            Logger::createLog('attack', 'IP ' . $_SERVER['REMOTE_ADDR']
+                . ' was added to attackers list. Incorrect sign in tries - 1');
+
             return;
         }
         if ($attackerTriesCount === '1') {
             $this->model->updateAttackerByIp($ip);
+
+            Logger::createLog('attack', 'IP ' . $_SERVER['REMOTE_ADDR']
+                . ' was updated in attackers list. Incorrect sign in tries - 2');
+
             return;
         }
+        Logger::createLog('attack', 'IP ' . $_SERVER['REMOTE_ADDR']
+            . ' has 3 incorrect sign in attempts. Blocking IP...');
+
         $this->model->deleteAttackerByIp($ip);
+
+        Logger::createLog('attack', 'IP ' . $_SERVER['REMOTE_ADDR']
+            . ' was deleted from attackers list.');
+
         $this->blockIp($ip);
     }
 
-    private function blockIp(string $ip) {
+    private function blockIp(string $ip)
+    {
         $this->model->addNewBlockedIp($ip);
+
+        Logger::createLog('ban', 'IP ' . $_SERVER['REMOTE_ADDR'] . ' was banned.');
+
         $this->view->redirect('/');
     }
 
@@ -31,11 +51,21 @@ class UserController extends Controller
     {
         $id = $this->model->getUserIdByEmail($_POST['email']);
         if (empty($id)) {
+            Logger::createLog('attack', 'Incorrect sign in attempt from IP - ' . $_SERVER['REMOTE_ADDR']);
+
             $this->checkIp($_SERVER['REMOTE_ADDR']);
+
+            Logger::createLog('attack', 'Incorrect email entered - ' . $_POST['email']);
+
             return 'There is no such user!';
         }
         if (!password_verify($_POST['pass'], $this->model->getUserPassById($id))) {
+            Logger::createLog('attack', 'Incorrect sign in attempt from IP - ' . $_SERVER['REMOTE_ADDR']);
+
             $this->checkIp($_SERVER['REMOTE_ADDR']);
+
+            Logger::createLog('attack', 'Incorrect password entered.');
+
             return 'Incorrect password!';
         }
 
@@ -46,6 +76,8 @@ class UserController extends Controller
     {
         $usersEmail = $this->model->getUsersEmailByAccessToken($_COOKIE['auth']);
         if (empty($usersEmail)) {
+            Logger::createLog('attack', 'Incorrect sign in attempt with cookie from IP ' . $_SERVER['REMOTE_ADDR']);
+
             return 'Wrong or old cookie!';
         }
         $_POST['email'] = $usersEmail;
@@ -89,6 +121,10 @@ class UserController extends Controller
                 $accessToken = $this->generateRandomString();
                 $this->model->updateUsersAccessTokenByEmail($_POST['email'], $accessToken);
                 setcookie('auth', $accessToken, time() + (86400 * 7), "/");
+            }
+            $attackerTriesCount = $this->model->getAttackerTriesByIp($_SERVER['REMOTE_ADDR']);
+            if (!empty($attackerTriesCount)) {
+                $this->model->deleteAttackerByIp($_SERVER['REMOTE_ADDR']);
             }
             $_SESSION['loggedIn'] = true;
             $_SESSION['name'] = $this->model->getUserNameByEmail($_POST['email']);

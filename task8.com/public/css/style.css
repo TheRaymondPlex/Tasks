@@ -209,20 +209,23 @@
     background-color: rgb(232, 234, 236);
 }
 
-.mb-3 {
+.relfield {
     position: relative;
 }
 
-.mb-3 span {
+.relfield span {
     position: absolute;
     right: 5px;
     color: red;
     font-size: 15px;
 }
 
-.bi-check-circle-fill {
+.sign-red {
+    color: darkred;
+}
+
+.sign-green {
     color: forestgreen;
-    font-size: 15px;
 }
 
 #togglePassword {

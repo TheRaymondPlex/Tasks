@@ -4,6 +4,7 @@ namespace application\controllers;
 
 use application\core\Controller;
 use application\lib\FileChecker;
+use application\lib\Logger;
 
 class FilesController extends Controller
 {
@@ -32,18 +33,18 @@ class FilesController extends Controller
             $this->view->redirect('/');
         }
         if (!empty($_FILES)) {
-            FileChecker::createLog('upload', "New upload attempt!");
+            Logger::createLog('upload', "New upload attempt from " . $_SESSION['name']);
 
             $uploadsDirPath = FileChecker::UPLOADS_FOLDER_PATH;
             if (!file_exists($uploadsDirPath)) {
-                FileChecker::createLog('upload', $uploadsDirPath . " folder does not exist. Creating...");
+                Logger::createLog('upload', $uploadsDirPath . " folder does not exist. Creating...");
                 try {
                     if (!mkdir($uploadsDirPath, 0777, true)) {
                         throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadsDirPath));
                     }
-                    FileChecker::createLog('upload', $uploadsDirPath . " created.");
+                    Logger::createLog('upload', $uploadsDirPath . " created.");
                 } catch (\RuntimeException $exception) {
-                    FileChecker::createLog('upload', $exception->getMessage());
+                    Logger::createLog('error', $exception->getMessage());
                     echo $exception->getMessage() . "<br>";
                     return false;
                 }
@@ -55,7 +56,7 @@ class FilesController extends Controller
             ];
             if (!empty($errors)) {
                 $this->view->render($data);
-                FileChecker::createLog('upload', "Upload attempt failed: $errors");
+                Logger::createLog('upload', "Upload attempt failed: $errors");
                 return false;
             }
 

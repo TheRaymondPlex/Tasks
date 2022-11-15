@@ -16,7 +16,7 @@
                 </div>
             {% endif %}
             <br>
-            <div class="mb-3">
+            <div class="mb-3 relfield">
                 <label for="first-name" class="form-label">First Name</label>
                 <span id="first-name-error"></span>
                 <input type="text"
@@ -25,10 +25,11 @@
                        name="first-name"
                        value="{% if firstName %}{{ firstName }}{% endif %}"
                        placeholder="Enter your first name"
-                       onkeyup="validateForm()">
+                       onkeyup="validateFirstName()"
+                       onblur="validateForm()">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 relfield">
                 <label for="second-name" class="form-label">Second Name</label>
                 <span id="second-name-error"></span>
                 <input type="text"
@@ -37,10 +38,11 @@
                        name="second-name"
                        value="{% if secondName %}{{ secondName }}{% endif %}"
                        placeholder="Enter your second name"
-                       onkeyup = "validateForm()">
+                       onkeyup = "validateSecondName()"
+                       onblur="validateForm()">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 relfield">
                 <label for="email" class="form-label">Email</label>
                 <span id="email-error"></span>
                 <input type="email"
@@ -49,11 +51,12 @@
                        name="email"
                        value="{% if email %}{{ email }}{% endif %}"
                        placeholder="Enter your Email"
-                       onkeyup = "validateForm()">
+                       onkeyup = "validateEmail()"
+                       onblur="validateForm()">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 relfield">
                 <label for="email-confirm" class="form-label">Email Confirmation</label>
                 <span id="email-confirm-error"></span>
                 <input type="email"
@@ -62,10 +65,11 @@
                        name="email-confirm"
                        value=""
                        placeholder="Enter Email again"
-                       onkeyup = "validateForm()">
+                       onkeyup = "confirmEmail()"
+                       onblur="validateForm()">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 relfield">
                 <label for="pass" class="form-label">Password</label>
                 <i class="bi bi-eye-slash" id="togglePassword"></i>
                 <span id="pass-error"></span>
@@ -75,11 +79,12 @@
                        name="pass"
                        value=""
                        placeholder="Enter your password"
-                       onkeyup = "validateForm()">
+                       onkeyup = "validatePass()"
+                       onblur="validateForm()">
                 <div id="passHelp" class="form-text">Your password will be hashed. We'll never know it.</div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 relfield">
                 <label for="pass-confirm" class="form-label">Password Confirmation</label>
                 <span id="pass-confirm-error"></span>
                 <input type="password"
@@ -88,7 +93,8 @@
                        name="pass-confirm"
                        value=""
                        placeholder="Enter password again"
-                       onkeyup = "validateForm()">
+                       onkeyup = "confirmPass()"
+                       onblur="validateForm()">
             </div>
 
             <div class="buttonsInForm">

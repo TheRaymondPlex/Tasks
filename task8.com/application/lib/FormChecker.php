@@ -55,6 +55,16 @@ class FormChecker
         }
     }
 
+    private static function validateEmailConfirm(string $email, string $emailConfirmed): void
+    {
+        $email = self::modifyFormData($email);
+        $emailConfirmed = self::modifyFormData($emailConfirmed);
+
+        if ($email !== $emailConfirmed) {
+            self::$errors[] = 'Email confirmation field is wrong!';
+        }
+    }
+
     private static function validatePassword(string $password): void
     {
         $password = self::modifyFormData($password);
@@ -67,13 +77,25 @@ class FormChecker
         }
     }
 
+    private static function validatePasswordConfirm(string $password, string $passwordConfirmed): void
+    {
+        $password = self::modifyFormData($password);
+        $passwordConfirmed = self::modifyFormData($passwordConfirmed);
+
+        if ($password !== $passwordConfirmed) {
+            self::$errors[] = 'Password confirmation field is wrong!';
+        }
+    }
+
     public static function checkErrorsInForm(): array
     {
         if (isset($_POST)) {
             self::validateFirstName($_POST['first-name']);
             self::validateSecondName($_POST['second-name']);
             self::validateEmail($_POST['email']);
+            self::validateEmailConfirm($_POST['email'], $_POST['email-confirm']);
             self::validatePassword($_POST['pass']);
+            self::validatePasswordConfirm($_POST['pass'], $_POST['pass-confirm']);
         } else {
             self::$errors[] = 'Something went wrong with sending form data!';
         }

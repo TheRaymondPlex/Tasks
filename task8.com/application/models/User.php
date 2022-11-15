@@ -4,10 +4,13 @@ namespace application\models;
 
 use application\core\Model;
 use application\lib\Db;
+use application\lib\Logger;
 use PDOException;
 
 class User extends Model
 {
+    private const RECORD_ALREADY_EXISTS_ERROR_CODE = 23000;
+
     public function addNewUser(string $email, string $firstName, string $secondName, string $pass)
     {
         $this->db->PDO->beginTransaction();
@@ -20,9 +23,10 @@ class User extends Model
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
 
-            if ($exception->getCode() == 23000) {
+            if ($exception->getCode() == self::RECORD_ALREADY_EXISTS_ERROR_CODE) {
                 return 'Email ' . $email . ' already taken!';
             }
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -36,6 +40,7 @@ class User extends Model
                                             WHERE email='$email'");
             return $result;
         } catch (PDOException $exception) {
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -49,6 +54,7 @@ class User extends Model
                                             WHERE email='$email'");
             return $result;
         } catch (PDOException $exception) {
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -62,6 +68,7 @@ class User extends Model
                                             WHERE id='$id'");
             return $result;
         } catch (PDOException $exception) {
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -79,6 +86,7 @@ class User extends Model
             return '';
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -92,6 +100,7 @@ class User extends Model
                                             WHERE access_token='$accessToken'");
             return $result;
         } catch (PDOException $exception) {
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -108,6 +117,7 @@ class User extends Model
             return '';
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -132,6 +142,7 @@ class User extends Model
             return '';
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
@@ -148,12 +159,14 @@ class User extends Model
             return '';
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }
     }
 
-    public function addNewBlockedIp(string $ip): string {
+    public function addNewBlockedIp(string $ip): string
+    {
         $this->db->PDO->beginTransaction();
         try {
             $this->db->PDO
@@ -163,6 +176,7 @@ class User extends Model
             return '';
         } catch (PDOException $exception) {
             $this->db->PDO->rollBack();
+            Logger::createLog('error', $exception->getMessage());
 
             return 'PDOException: ' . $exception->getMessage();
         }

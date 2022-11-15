@@ -8,7 +8,6 @@ class FileChecker
 {
     private const MAX_SIZE = 1000000; // Max size for single file upload
     public const UPLOADS_FOLDER_PATH = 'uploads/'; // Default folder for uploads
-    private const LOGS_FOLDER_PATH = 'application/logs/'; //Default folder for logs
     private static array $composedImageMeta = [];
 
     private static array $allowedImageTypes = [ // Allowed image types that can be uploaded
@@ -70,40 +69,6 @@ class FileChecker
         $filesWithoutDots = array_diff(scandir($folderPath), array('..', '.'));
 
         return array_values($filesWithoutDots);
-    }
-
-    public static function createLog($logType, $log)
-    {
-        if ($logType === 'upload') {
-            $logFileName = 'uploads_' . date('d.m.Y') . '.txt';
-            $pathToLogFile = self::LOGS_FOLDER_PATH . $logFileName;
-        }
-        if ($logType === 'action') {
-            $logFileName = 'actions_' . date('d.m.Y') . '.txt';
-            $pathToLogFile = self::LOGS_FOLDER_PATH . $logFileName;
-        }
-
-        if (!file_exists(self::LOGS_FOLDER_PATH)) {
-            try {
-                if (!mkdir(self::LOGS_FOLDER_PATH, 0777, true)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', self::LOGS_FOLDER_PATH));
-                }
-            } catch (\RuntimeException $exception) {
-                echo $exception->getMessage() . "<br>";
-                return;
-            }
-        }
-
-        if (!file_exists($pathToLogFile)) {
-            file_put_contents($pathToLogFile, '');
-        }
-
-        $time = date('[d.m.Y][H:i:s]', time());
-        $ip = '[' . $_SERVER['REMOTE_ADDR'] . ']';
-        $contents = file_get_contents($pathToLogFile);
-        $contents .= "$time from $ip - $log\r";
-
-        file_put_contents($pathToLogFile, $contents);
     }
 
     public static function validatingFilesOnUpload(): string

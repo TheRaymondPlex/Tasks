@@ -44,7 +44,6 @@
                         <th scope="row">{{ key + 1 }}</th>
                         <td>{{ value['name'] }}</td>
                         <td>{{ value['size'] }} Kb</td>
-{#                        <td>{{ value['meta']|raw|nl2br }}</td>#}
                         <td>{% if value['meta'] is iterable %}
                                 {% for key, val in value['meta'] %}
                                 <b>{{ key }}</b>: {{ val }}<br>
