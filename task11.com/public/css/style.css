@@ -1,0 +1,51 @@
+body {
+    background-image: url("/public/images/background-image.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+}
+
+hr {
+    border-top: black solid 8px
+}
+
+.container {
+    color: white;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    background-color: rgba(35, 37, 50, 98%);
+    border-radius: 10px;
+}
+
+.stroke {
+    text-transform: uppercase;
+    color: #995030;
+    text-shadow: -3px -3px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.container>div>div {
+    text-align: center;
+    font-size: 24px;
+}
+
+.container div div table{
+    text-align: center;
+    font-size: 18px;
+}
+
+.container div div div {
+    background-color: rgba(35, 25, 50, 98%);
+    border: black solid 2px;
+    border-radius: 10px;
+    font-size: 40px;
+}
+
+#sale-car-list {
+    border: #cc0000 solid 2px;
+}
+
+#sale-car-list li {
+    list-style-type: decimal;
+    border-bottom: #4d5154 solid 1px;
+    border-top: #4d5154 solid 1px;
+}
