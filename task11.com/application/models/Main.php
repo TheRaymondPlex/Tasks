@@ -39,7 +39,7 @@ class Main extends Model
                             from showroom_cars
                             where date_of_sale < \'2022-01-01\'
                             group by date_of_sale;
-');
+        ');
     }
 
     public function getUnsold()
