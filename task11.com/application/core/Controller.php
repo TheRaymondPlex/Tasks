@@ -19,6 +19,7 @@ abstract class Controller
     {
         $path = 'application\models\\' . ucfirst($modelName);
         if (class_exists($path)) {
+
             return new $path;
         }
     }

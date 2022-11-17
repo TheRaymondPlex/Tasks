@@ -3,16 +3,16 @@
     Car Showroom Dashboard
 {% endblock %}
 {% block content %}
-    <main>
-        <div class="container">
+    <main class="justify-content-center">
+        <div class="container bg-gray-900 ">
             <div class="row">
                 <div class="col-12">
                     <h1 class="stroke">car showroom dashboard</h1>
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-6">
+            <br>
+            <div class="grid gap-4 grid-cols-2">
+                <div class="">
                     Ср. стоимость проданных авто за всё время
                     <div>{% if avrAllTime %}
                             {{ avrAllTime }}
@@ -21,7 +21,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="">
                     Ср. стоимость проданных сегодня авто
                     <div>{% if avrToday %}
                         {{ avrToday }}
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <hr>
+            <br>
             <div class="row text-uppercase text-bg-success">
                 <div class="col-12">sold last year</div>
             </div>
@@ -39,18 +39,18 @@
             <div class="row">
                 <div class="col-12">
                     {% if lastYear %}
-                    <table class="table table-dark table-bordered table-striped-columns table-hover">
-                        <thead class="thead-light">
+                    <table class="min-w-full text-center">
+                        <thead class="bg-gray-800 border-gray-900">
                         <tr>
-                            <th scope="col">День</th>
-                            <th scope="col">Количество</th>
+                            <th scope="col" class="px-6 py-2 text-center">День</th>
+                            <th scope="col" class="px-6 py-2 text-center">Количество</th>
                         </tr>
                         </thead>
                         <tbody>
                             {% for day in lastYear %}
-                            <tr>
-                                <td>{{ day.date_of_sale }}</td>
-                                <td>{{ day.sales_on_day }}</td>
+                            <tr class="border-b bg-gray-400 border-gray-800">
+                                <td class="px-6 py-2 whitespace-nowrap">{{ day.date_of_sale }}</td>
+                                <td class="px-6 py-2 whitespace-nowrap">{{ day.sales_on_day }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -60,7 +60,7 @@
                     {% endif %}
                 </div>
             </div>
-            <hr>
+            <br>
             <div class="row text-uppercase text-bg-danger">
                 <div class="col-12">Not sold</div>
             </div>
@@ -68,8 +68,8 @@
             <div class="row">
                 <div class="col-12">
                     {% if unsold %}
-                    <table class="table table-dark table-bordered table-striped-columns table-hover">
-                        <thead class="thead-light">
+                    <table class="min-w-full text-center">
+                        <thead class="bg-gray-800 border-gray-900">
                         <tr>
                             <th scope="col">Модель</th>
                             <th scope="col">Год производства</th>
@@ -79,7 +79,7 @@
                         </thead>
                         <tbody>
                         {% for car in unsold %}
-                            <tr>
+                            <tr class="border-b bg-gray-400 border-gray-800">
                                 <td>{{ car.model }}</td>
                                 <td>{{ car.year }}</td>
                                 <td>{{ car.color }}</td>
@@ -93,14 +93,14 @@
                     {% endif %}
                 </div>
             </div>
-            <hr>
+            <br>
             <div class="row">
                 <div class="col-2">
                     В продаже
                 </div>
                 <div class="col-10">
                     {% if onSale %}
-                        <ul id="sale-car-list">
+                        <ul id="sale-car-list" role="list">
                             {% for car in onSale %}
                                 <li>{{ car.model }}</li>
                             {% endfor %}
