@@ -8,57 +8,63 @@ class Main extends Model
 {
     public function getAverageAllTime(): string
     {
-        $result = $this->db->oneValue('
-                            select round(avg(price)) as avr_all_time
-                            from showroom_cars
-                            where sold_status = 1;
-        ');
+        $result = $this->db->oneValue("
+            SELECT ROUND(AVG(price)) AS avr_all_time
+            FROM showroom_cars AS sc
+            LEFT JOIN statuses s ON sc.sold_status = s.id
+            WHERE s.name = 'Sold';
+        ");
         if (empty($result)) {
-            return '';
+            return "";
         }
         return $result;
     }
 
     public function getAverageToday(): string
     {
-        $result = $this->db->oneValue('
-                            select round(avg(price)) as avr_today
-                            from showroom_cars
-                            where sold_status = 1 and date_of_sale = curdate();
-        ');
+        $result = $this->db->oneValue("
+            SELECT ROUND(AVG(price)) AS avr_today
+            FROM showroom_cars AS sc
+            LEFT JOIN statuses s ON s.id = sc.sold_status
+            WHERE s.name = 'Sold' and date_of_sale = CURDATE();
+        ");
         if (empty($result)) {
-            return '';
+            return "";
         }
         return $result;
     }
 
     public function getLastYearSales(): array
     {
-        return $this->db->row('
-                            select date_of_sale, count(date_of_sale) as sales_on_day
-                            from showroom_cars
-                            where date_of_sale < \'2022-01-01\'
-                            group by date_of_sale;
-        ');
+        return $this->db->row("
+            SELECT date_of_sale, count(date_of_sale) AS sales_on_day
+            FROM showroom_cars
+            WHERE date_of_sale < CONCAT(YEAR(CURDATE()),'-01-01')
+            GROUP BY date_of_sale;
+        ");
     }
 
     public function getUnsold()
     {
-        return $this->db->row('
-                            select dir.model, dir.year_of_production as year, sh.color, sh.price
-                            from vehicle_directory as dir, showroom_cars as sh
-                            where dir.id = sh.vehicle_id and sh.sold_status = 2
-                            order by year desc, price;
-        ');
+        return $this->db->row("
+            SELECT model, year_of_production AS year, color, price
+            FROM vehicle_directory AS vd
+                LEFT JOIN showroom_cars sc ON vd.id = sc.vehicle_id
+                LEFT JOIN statuses s ON sc.sold_status = s.id
+            WHERE s.name = 'Not Sold'
+            ORDER BY year DESC, price;
+        ");
     }
 
     public function getOnSale()
     {
-        return $this->db->row('
-                            select dir.model
-                            from vehicle_directory as dir, showroom_cars as sh
-                            where dir.id = sh.vehicle_id and sh.sold_status = 2
-                            order by model;
-        ');
+        return $this->db->row("
+            SELECT dir.model
+            FROM vehicle_directory AS dir
+                LEFT JOIN showroom_cars AS sc ON dir.id = sc.vehicle_id
+                LEFT JOIN statuses s ON s.id = sc.sold_status
+            WHERE s.name = 'Not Sold'
+            ORDER BY model;
+        ");
     }
 }
