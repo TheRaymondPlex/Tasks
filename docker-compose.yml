@@ -1,0 +1,28 @@
+services:
+  php-apache-environment:
+    container_name: php-apache
+    build:
+      context: .
+      dockerfile: 'Dockerfile'
+    depends_on:
+      - db
+    volumes:
+      - ./task11.com:/var/www/html
+    ports:
+      - '80:80'
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DOCK_DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DOCK_DB_BASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./task11-dump.sql:/docker-entrypoint-initdb.d/datadump.sql
+    ports:
+      - "9906:3306"
+
+volumes:
+  mysql_data:
+    name: 'MySQL_data'
