@@ -1,0 +1,263 @@
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: rgb(35, 37, 50);
+    }
+
+    h1 {
+        left: 0;
+        position: fixed;
+        color: white;
+        text-align: center;
+        width: 100%;
+        background-color: rgb(35, 37, 50);
+        z-index: 6;
+    }
+
+    h4 {
+        color: black;
+    }
+
+    form h1 {
+        color: white;
+        right: 0;
+        margin-top: -100px;
+    }
+
+    .container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-direction: column;
+        padding-bottom: 20px;
+    }
+
+    .container table {
+        display: block;
+        font-size: small;
+    }
+
+    .container a {
+        display: block;
+    }
+
+    .container h1 {
+        display: block;
+        margin-bottom: 80%;
+    }
+
+    .box {
+        width: 400px;
+    }
+
+    .buttonsMain {
+        display: flex;
+        z-index: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100px;
+        width: 100%;
+    }
+
+    .buttonsMain a {
+        align-self: auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .controlPanel {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        height: 50px;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        z-index: 6;
+    }
+
+    .buttonRight {
+        display: flex;
+        height: 100%;
+        width: 100%;
+    }
+
+    .buttonsInForm {
+        position: relative;
+        display: flex;
+        height: 20%;
+        justify-content: space-between;
+        flex-direction: column;
+        right: 0;
+    }
+
+    .buttonsInForm button {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .container form {
+        width: 100%;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        background-color: rgb(232, 234, 236);
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+
+    td {
+        border: none;
+        text-align: center;
+        padding-left: 100%;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    body {
+        background-color: rgb(35, 37, 50);
+    }
+
+    h1 {
+        color: white;
+    }
+
+    h4 {
+        color: white;
+    }
+
+    form h1 {
+        color: black;
+    }
+
+    .container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .container table {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        background-color: rgb(232, 234, 236);
+    }
+
+    .box {
+        width: 1200px;
+    }
+
+    .buttonsMain {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100px;
+    }
+
+    .buttonsMain a {
+        width: 100px;
+        align-self: auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .controlPanel {
+        display: flex;
+        border-radius: 10px;
+        justify-content: space-between;
+    }
+
+    .buttonRight {
+        display: flex;
+        justify-content: space-between;
+        width: 330px;
+    }
+
+    .buttonsInForm {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .buttonsInForm button {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .container form {
+        width: 450px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        background-color: rgb(232, 234, 236);
+    }
+}
+
+.container table {
+    background-color: rgb(232, 234, 236);
+}
+
+.relfield {
+    position: relative;
+}
+
+.relfield span {
+    position: absolute;
+    right: 5px;
+    color: red;
+    font-size: 15px;
+}
+
+.sign-red {
+    color: darkred;
+}
+
+.sign-green {
+    color: forestgreen;
+}
+
+#togglePassword {
+    cursor: pointer;
+}
+
+#toggleRememberMe {
+    display: flex;
+    justify-content: center;
+}
+
+.preview {
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.preview img {
+    display: flex;
+    width: 410px;
+}
+
+#no-files {
+    background-color: rgb(70, 40, 50);
+    margin-left: 350px;
+    margin-right: 350px;
+    color: red;
+    border: black solid 3px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

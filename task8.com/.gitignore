@@ -1,0 +1,11 @@
+#vendor folder
+vendor
+
+#.env file
+.env
+
+#uploads folder
+uploads
+
+#logs folder
+application/logs

@@ -1,0 +1,59 @@
+{% extends 'layouts/default.twig' %}
+{% block title %}
+    Sign In
+{% endblock %}
+{% block script %}<script src="/public/js/SignInValidation.js"></script>{% endblock %}
+{% block content %}
+    <div class="container">
+        <form action="/user/login" method="post" id="login-form">
+            <h1 class="display-6 text-center">SIGN IN</h1>
+            <hr>
+            {% if errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ errors }}
+            </div>
+            {% endif %}
+            <br>
+            <div class="mb-3 relfield">
+                <label for="email" class="form-label">Login (Email)</label>
+                <span id="email-error"></span>
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       name="email"
+                       value="{% if email %}{{ email }}{% endif %}"
+                       placeholder="Enter your login (Email)"
+                       onkeyup = "validateForm()">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+
+            <div class="mb-3 relfield">
+                <label for="pass" class="form-label">Password</label>
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
+                <span id="pass-error"></span>
+                <input type="password"
+                       class="form-control"
+                       id="pass"
+                       name="pass"
+                       value=""
+                       placeholder="Enter your password"
+                       onkeyup = "validateForm()">
+            </div>
+
+            <div class="mb-3" id="toggleRememberMe">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="remember">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Remember me</label>
+                </div>
+            </div>
+
+            <div class="buttonsInForm">
+                <a href="/" class="btn btn-secondary">Cancel</a>
+                <button type="reset" onclick="clearFields()" class="btn btn-dark">Clear</button>
+                <button id="autocomplete" type="button" onclick="autoCompleteLoginForm()" class="btn btn-warning">Auto Complete</button>
+                <button id="login" type="submit" class="btn btn-success" disabled>Login</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
