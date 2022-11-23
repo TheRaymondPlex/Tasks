@@ -14,6 +14,14 @@ class Db
         $this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
+    /**
+     * @return PDO
+     */
+    public function getPDO(): PDO
+    {
+        return $this->PDO;
+    }
+
     public function query($sql, $params = [])
     {
         $stmt = $this->PDO->prepare($sql);

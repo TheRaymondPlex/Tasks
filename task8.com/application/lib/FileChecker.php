@@ -39,7 +39,7 @@ class FileChecker
         return false;
     }
 
-    private static function composingMetaArray($arr): array
+    public static function composingMetaArray($arr): array
     {
         self::$composedImageMeta = [];
         foreach ($arr as $key => $item) {
