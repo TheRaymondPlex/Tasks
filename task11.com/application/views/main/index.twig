@@ -1,0 +1,113 @@
+{% extends 'layouts/default.twig' %}
+{% block title %}
+    Car Showroom Dashboard
+{% endblock %}
+{% block content %}
+    <main class="justify-content-center">
+        <div class="container bg-gray-900 ">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="stroke">car showroom dashboard</h1>
+                </div>
+            </div>
+            <br>
+            <div class="grid gap-4 grid-cols-2">
+                <div class="">
+                    Ср. стоимость проданных авто за всё время
+                    <div>{% if avrAllTime %}
+                            {{ avrAllTime }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="">
+                    Ср. стоимость проданных сегодня авто
+                    <div>{% if avrToday %}
+                        {{ avrToday }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row text-uppercase text-bg-success">
+                <div class="col-12">sold last year</div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    {% if lastYear %}
+                    <table class="min-w-full text-center">
+                        <thead class="bg-gray-800 border-gray-900">
+                        <tr>
+                            <th scope="col" class="px-6 py-2 text-center">День</th>
+                            <th scope="col" class="px-6 py-2 text-center">Количество</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for day in lastYear %}
+                            <tr class="border-b bg-gray-600 border-gray-800">
+                                <td class="px-6 py-2 whitespace-nowrap">{{ day.date_of_sale }}</td>
+                                <td class="px-6 py-2 whitespace-nowrap">{{ day.sales_on_day }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <div>No data!</div>
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row text-uppercase text-bg-danger">
+                <div class="col-12">Not sold</div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    {% if unsold %}
+                    <table class="min-w-full text-center">
+                        <thead class="bg-gray-800 border-gray-900">
+                        <tr>
+                            <th scope="col">Модель</th>
+                            <th scope="col">Год производства</th>
+                            <th scope="col">Цвет</th>
+                            <th scope="col">Цена</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for car in unsold %}
+                            <tr class="border-b bg-gray-600 border-gray-800">
+                                <td>{{ car.model }}</td>
+                                <td>{{ car.year }}</td>
+                                <td>{{ car.color }}</td>
+                                <td>{{ car.price }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <div>No data!</div>
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    В продаже
+                </div>
+                <div class="col-10">
+                    {% if onSale %}
+                        <ul id="sale-car-list" role="list">
+                            {% for car in onSale %}
+                                <li>{{ car.model }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

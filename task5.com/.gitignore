@@ -1,8 +1,0 @@
-#vendor folder
-vendor
-
-#uploads folder
-uploads
-
-#logs
-application/logs/*

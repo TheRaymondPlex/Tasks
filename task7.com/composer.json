@@ -1,9 +1,0 @@
-{
-  "require": {
-    "twig/twig": "^3.0",
-    "vlucas/phpdotenv": "^5.5",
-    "ext-pdo": "*",
-    "twbs/bootstrap": "5.2.*",
-    "twbs/bootstrap-icons": "^1.10"
-  }
-}
