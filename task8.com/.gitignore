@@ -1,11 +1,5 @@
-#vendor folder
-vendor
-
-#.env file
+.phpunit.cache
 .env
-
-#uploads folder
+vendor
 uploads
-
-#logs folder
 application/logs
