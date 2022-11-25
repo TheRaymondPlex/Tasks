@@ -1,0 +1,24 @@
+swagger: "2.0"
+info:
+  title: GoRest.co.in API specification
+  description: GoRest.co.in API specification
+  version: 1.0.0
+tags:
+  - name: users
+    description: Everything about users
+  - name: posts
+    description: User's posts
+  - name: comments
+    description: Everything about comments
+  - name: todos
+    description: Everything about user's todos
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Method for getting list of users (10 by default)
+      operationId: get10Users
+      responses:
+        '200':
+          description: OK. Everything worked as expected.
